@@ -10,46 +10,46 @@ class App extends Component {
     super(props)
     this.state = {
       sketchDetails: {
-        drawingModel: undefined,
-        drawingSize: undefined,
-        drawingCount: undefined,
-        drawingColor: undefined,
-        drawingAnimation: undefined,
+        drawingModel: "",
+        drawingSize: "",
+        drawingCount: "",
+        drawingColor: "",
+        drawingAnimation: "",
       },
 
       topTokenDescriptions: {
-        TOP1: "bee", // in the future these will be able to be set to whatever via dropdown in reader settings
-        TOP2: "flower",
-        TOP3: "strawberry",
-        TOP4: "snail",
-        TOP5: "castle",
-        TOP6: "ant",
+        1: "bee", // in the future these will be able to be set to whatever via dropdown in reader settings
+        2: "flower",
+        3: "strawberry",
+        4: "snail",
+        5: "castle",
+        6: "ant",
       },
 
       leftTokenDescriptions: {
-        LEFT1: "slow, falling",
-        LEFT2: "slow, rising",
-        LEFT3: "slow, flocking",
+        1: ["slow" , "falling"],
+        2: ["slow", "rising"],
+        3: ["slow", "flocking"],
       },
 
       rightTokenDescriptions: {
-        RIGHT1: "small, many",
-        RIGHT2: "medium, some",
-        RIGHT3: "large, few",
-        RIGHT4: "mix, some",
+        1: ["small", "many"],
+        2: ["medium", "some"],
+        3: ["large", "few"],
+        4: ["mix", "some"],
       },
 
       bottomTokenDescriptions: {
-        BOTTOM1: "red", // it would be cool if when you change the token, new ones pop up in that color and slowly replace the old color (so drawings have lifetimes)
-        BOTTOM2: "orange",
-        BOTTOM3: "yellow",
-        BOTTOM4: "green",
-        BOTTOM5: "blue",
-        BOTTOM6: "purple",
-        BOTTOM7: "cyan",
-        BOTTOM8: "magenta",
-        BOTTOM9: "black",
-        BOTTOM10: "rainbow", // either each drawing is a random color, or better, each stroke of each drawing is a random color
+        1: "red", // it would be cool if when you change the token, new ones pop up in that color and slowly replace the old color (so drawings have lifetimes)
+        2: "orange",
+        3: "yellow",
+        4: "green",
+        5: "blue",
+        6: "purple",
+        7: "cyan",
+        8: "magenta",
+        9: "black",
+        10: "rainbow", // either each drawing is a random color, or better, each stroke of each drawing is a random color
       },
       
       readerLabels: {
@@ -66,12 +66,12 @@ class App extends Component {
   // this is where a lot of logic will be - for determining what the sketchDetails are depending on what messages come from arduino
   // ex:
   // message: "TOP1"
-  // logic: if TOP1, setState drawingModel: tokendesc[TOP1]
+  // logic: if regex(letters) = TOP 
+  //          if topTokenDescriptions[regex(numbers)] exists, setState drawingModel, readerLabel[top]: topTokensDesc[regex(numbers)]
+  //          else (if no numbers (means it's "wrong"))
+  //          drawingModel changes to nothing
+  //          readerLabel[top]: changes to "Invalid Token"
 
-  // arduino logic: tokens belong to specific readers
-  // ex:
-  // message: "UPWrong"
-  // logic: if UPWrong, 
 
 
   render() {
@@ -86,7 +86,7 @@ class App extends Component {
         {/* <P5Wrapper sketch={sketch}  /> */}
 
         <SettingsZone
-          modelName={this.state.sketchDetails.drawingModel}
+          readerLabels={this.state.readerLabels}
         />
 
 

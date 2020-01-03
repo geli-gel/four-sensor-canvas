@@ -1,7 +1,15 @@
 // from here: https://github.com/slin12/react-p5-wrapper
 
+// import ml5 from 'ml5';
+// that import caused problems. instead i pasted the cdn link into index.html (hopefully that works?)
+
+// figured out how to get ml5 "defined" even though it was correctly showing the version
+const ml5 = window.ml5;
+
 export default function sketch (p) {
   let modelName = ""; // this is from a useful example where they take in a prop and do some math to it before assigning it to a variable that does something on the canvas
+
+  console.log('ml5 version:', ml5.version);
 
   p.setup = function () {
     p.createCanvas(600, 400, p.WEBGL);
@@ -18,7 +26,7 @@ export default function sketch (p) {
     p.noStroke();
     p.push();
     // todo - add text showing modelName prop
-    
+
     p.box(100);
     p.pop();
   };

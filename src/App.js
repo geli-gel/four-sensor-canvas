@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import P5Wrapper from 'react-p5-wrapper'; // the legit one
+// import P5Wrapper from 'react-p5-wrapper'; // the legit one
 import DrawingZone from './components/DrawingZone';
+import SettingsZone from './components/SettingsZone';
 // import P5Wrapper from "./P5Wrapper"; // the weird one
-import sketch from "./sketch";
-
 
 class App extends Component {
   constructor(props) {
@@ -44,6 +42,10 @@ class App extends Component {
         />
         {/* Weird P5Wrapper */}
         {/* <P5Wrapper sketch={sketch}  /> */}
+
+        <SettingsZone
+          modelName={this.state.sketchDetails.modelName}
+        />
 
 
       </div>

@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import Reader from './Reader';
 
-const SettingsZone = ({movies, buttonText, tokenRead}) => {
-  const readers = readers.map((reader) => {
-    return (
-      <Reader 
-        key={reader.id}
-        position={reader.position}
-        name={reader.name}
-        currentToken={reader.tokenRead}
-        imageUrl={reader.imageUrl}
-        // onButtonClick={ () => onReaderButtonClick(reader)}
-      />
-    )
-  })
+const SettingsZone = (props) => {
+  // to-do: make the readers take in props of reader info (position, label)
+  // const readers = props.readers.map((reader) => {
+  //   return (
+  //     <Reader 
+  //       key={reader.id}
+  //       position={reader.position}
+  //       label={reader.tokenRead}
+  //       imageUrl={reader.imageUrl}
+  //       // to-do: add settings prop
+  //       // onButtonClick={ () => onReaderButtonClick(reader)}
+  //     />
+  //   )
+  // })
 
   return (
     <div className="settingsZone" >
-      {readers}
+      {/* {readers} */}
     </div>
   )
 }

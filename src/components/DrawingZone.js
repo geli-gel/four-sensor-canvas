@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from "../sketch";
 
@@ -11,7 +11,8 @@ const DrawingZone = ({canvasWidth, canvasHeight, sketchDetails}) => {
         sketch={sketch} 
         canvasWidth={canvasWidth}
         canvasHeight={canvasHeight}
-        modelName={sketchDetails.drawingModel}
+        // modelName={sketchDetails.drawingModel}
+        modelName="cat"
       />.
     </div>
   )

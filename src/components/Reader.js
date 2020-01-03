@@ -3,22 +3,17 @@ import './Reader.css'
 
 const Reader = (props) => {
 
-  const { position, name, currentToken, imageUrl } = props;
+  const { position, label, imageUrl } = props;
 
   return (
-    <div className={`reader-card ${position}`}>
-      <section className="reader-card-name">
-        {name}
+    <div className={`reader-${position}`}>
+      {/* to-do: add CSS to positon card based on position, and give it the diamond shape! */}
+      <section className="reader-label">
+        {label}
       </section>
-      <img class="card-img-top img-fluid" src={imageUrl} alt="Reader Image" />
-      
-      <section className="movie-card-body">
-        {overview}
-      </section>
+      <img class="card-img-top img-fluid" src={imageUrl} alt={label} />
 
-      <button className="btn btn-primary" onClick={onButtonClick} >
-        {buttonText}
-      </button>
+      {/* to-do: add  */}
     </div>
   )
 }

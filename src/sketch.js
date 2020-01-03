@@ -1,7 +1,7 @@
 // from here: https://github.com/slin12/react-p5-wrapper
 
 export default function sketch (p) {
-  let modelName = "";
+  let modelName = ""; // this is from a useful example where they take in a prop and do some math to it before assigning it to a variable that does something on the canvas
 
   p.setup = function () {
     p.createCanvas(600, 400, p.WEBGL);
@@ -17,7 +17,8 @@ export default function sketch (p) {
     p.background(100);
     p.noStroke();
     p.push();
-    // todo - add text showing model name prop
+    // todo - add text showing modelName prop
+    
     p.box(100);
     p.pop();
   };

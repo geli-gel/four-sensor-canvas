@@ -1,0 +1,5 @@
+.settings-zone {
+  display:flex;
+  flex-direction:column;
+  justify-content: space-evenly;
+}

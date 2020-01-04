@@ -13,8 +13,11 @@ const DrawingZone = ({canvasWidth, canvasHeight, sketchDetails}) => {
         sketch={sketch} 
         canvasWidth={canvasWidth}
         canvasHeight={canvasHeight}
-        // modelName={sketchDetails.drawingModel}
-        modelName="cat"
+        modelName={sketchDetails.drawingModel}
+        drawingSize={sketchDetails.drawingSize}
+        drawingAmount={sketchDetails.drawingAmount}
+        drawingColor={sketchDetails.drawingColor}
+        drawingAnimation={sketchDetails.drawingAnimation}
       />
     </div>
   )

@@ -10,9 +10,9 @@ class App extends Component {
     super(props)
     this.state = {
       sketchDetails: {
-        drawingModel: "",
+        drawingModel: "bee",
         drawingSize: "",
-        drawingCount: "",
+        drawingAmount: 4,
         drawingColor: "",
         drawingAnimation: "",
       },
@@ -53,7 +53,7 @@ class App extends Component {
       },
       
       readerLabels: {
-        top: "Empty",
+        top: "cat",
         left: "Empty",
         right: "Empty",
         bottom: "Empty",  

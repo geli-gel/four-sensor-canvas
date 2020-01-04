@@ -6,8 +6,10 @@ const Reader = (props) => {
   const { position, label } = props;
 
   return (
-    <div className={`reader-${position}`}>
-      Reader Position: {position}
+    <div className={`reader ${position}`}>
+      <section>
+        {position} reader
+      </section>
       {/* to-do: add CSS to positon card based on position, and give it the diamond shape! */}
       <section className="reader-label">
         {label}

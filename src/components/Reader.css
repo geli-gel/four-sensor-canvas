@@ -1,0 +1,29 @@
+.reader {
+  display: flex;
+  width: 150px;
+  height: 70px;
+  background-color: antiquewhite;
+  padding: 6px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.reader-label {
+  
+}
+
+.top {
+
+}
+
+.left {
+  float: left;
+}
+
+.right {
+
+}
+
+.bottom {
+
+}

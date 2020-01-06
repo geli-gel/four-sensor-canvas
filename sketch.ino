@@ -1,5 +1,4 @@
-// the arduino code as of 10:28
-
+11:33am
 
 /**
    --------------------------------------------------------------------------------------------------------------------
@@ -81,6 +80,7 @@ MFRC522 mfrc522[NR_OF_READERS];
 // (copying from https://www.electronics-lab.com/project/rfid-rc522-arduino-uno-oled-display/)
 byte uidLength = 11;
 String uidString;
+
 /**
    Initialize.
 */
@@ -269,13 +269,15 @@ void AllowTag()
   // TO-DO: make a serial message out of the current reader (readerLabel depends on reader #, here)
   // AND tokenNumberLabel (which is the token number in the array, created by adding 1 each time a card is denied)    \
   // tokenNumberLabel.toString() or something
-  String message = readerPositionLabel + String(tokenNumberLabel); // (will give something like "TOP1"
+  String message = readerPositionLabel + String(tokenNumberLabel); // (will give something like "TOP1")
+  
   // convert C++ String into C string (array of characters) in order to use Serial.write
   // https://stackoverflow.com/questions/16290981/how-to-transmit-a-string-on-arduino
-  char* buf = (char*) malloc(sizeof(char)*message.length()+1);
+//  char* buf = (char*) malloc(sizeof(char)*message.length()+1);
   // using toCharArray
-  message.toCharArray(buf, message.length()+1);
-  // freeing the memory
+//  message.toCharArray(buf, message.length()+1);
+  // TO-DO if using tochararray - free the memory
+//  Serial.write(message); // not working, maybe need to use buf instead of message?
   Serial.println(message);
 }
 

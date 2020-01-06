@@ -1,4 +1,5 @@
 import Drawing from './drawing';
+// import p5 from 'p5';
 // from here: https://github.com/slin12/react-p5-wrapper
 
 // import ml5 from 'ml5';
@@ -6,6 +7,10 @@ import Drawing from './drawing';
 
 // figured out how to get ml5 "defined" even though it was correctly showing the version
 const ml5 = window.ml5;
+
+// maybe need to include the serialport thingy here?? (currently got added into index.html)
+const p5 = window.p5; // idk, maybe do the npm install better...
+// gonna try to just copy the file into my project
 
 export default function sketch (p) {
   // props being initialized, will be changed by props soon
@@ -15,6 +20,12 @@ export default function sketch (p) {
   let canvasHeight = 0;
   // array to hold all drawing objects that are created
   let drawings = [];
+
+  // maybe? 
+  let serial;
+
+  const portName = '/dev/tty.usbmodem14201';
+
 
   // the props passed into the p5wrapper:
   // sketch={sketch} 
@@ -31,6 +42,39 @@ export default function sketch (p) {
     // drawing1 = new Drawing(p, 600, 400, modelName);   
     console.log('setup drawingAmount:', drawingAmount)
     console.log('in setup, modelName: ', modelName)
+
+    // serialport basics from https://itp.nyu.edu/physcomp/labs/labs-serial-communication/lab-serial-input-to-the-p5-js-ide/
+    serial = new p5.SerialPort(); // maybe move this outside of setup? i think it belongs here though
+
+    // i think instead of all of this. you can put this: but maybe not
+
+    serial.list();
+
+    serial.on('list', printList); // could be a callback to determine port that matches character's usb modem and programattically setting portName
+    function printList(portList) { 
+      for (let i = 0; i < portList.length; i++) {
+        console.log(i + " " + portList[i])
+      }
+    };
+
+    serial.open(portName);
+
+    // TO-DO maybe: (write the callback functions)
+    // serial.on('connected', serverConnected);
+    // serial.on('error', serialError);
+    // serial.on('close', portClose);
+
+    // TO-DO for sure:
+    serial.on('data', serialEvent);
+
+    function serialEvent() {
+      // read a byte from the serial port:
+      var inByte = serial.read();
+      // store it in a global variable:
+      console.log(inByte);
+    };
+    
+    
 
    
 

@@ -1,4 +1,4 @@
-// the arduino code as of 1/6/2020 10 am
+// the arduino code as of 10:28
 
 
 /**
@@ -263,15 +263,20 @@ void DenyingTag()
 
 void AllowTag()
 {
+  tokenNumberLabel += 1;
   tagcount = tagcount + 1;
   access = true;
   // TO-DO: make a serial message out of the current reader (readerLabel depends on reader #, here)
   // AND tokenNumberLabel (which is the token number in the array, created by adding 1 each time a card is denied)    \
   // tokenNumberLabel.toString() or something
-//  String serialMessage = readerLabel + tokenNumberLabel // (will give something like "TOP1"
-  // send message here (.write?)
-  tokenNumberLabel += 1;
-
+  String message = readerPositionLabel + String(tokenNumberLabel); // (will give something like "TOP1"
+  // convert C++ String into C string (array of characters) in order to use Serial.write
+  // https://stackoverflow.com/questions/16290981/how-to-transmit-a-string-on-arduino
+  char* buf = (char*) malloc(sizeof(char)*message.length()+1);
+  // using toCharArray
+  message.toCharArray(buf, message.length()+1);
+  // freeing the memory
+  Serial.println(message);
 }
 
 void Initialize()

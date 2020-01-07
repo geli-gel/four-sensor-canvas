@@ -84,17 +84,18 @@ class App extends Component {
       case "TOP":
         console.log('in switch case "TOP"')
         console.log('this.state', this.state)
-        if (messageNumberMatch)
-        if (this.state.topTokenDescriptions[messageNumberMatch[0]]) { // I'm saying if the message has a number, set the sketch details and top reader label to that,
-          let updatedSketchDetails = this.state.sketchDetails;
-          updatedSketchDetails.drawingModel = this.state.topTokenDescriptions[messageNumberMatch[0]];
+        if (messageNumberMatch) {
+          if (this.state.topTokenDescriptions[messageNumberMatch[0]]) { // I'm saying if the message has a number that corresponds to a number in this reader's state description, set the sketch details and top reader label to that,
+            let updatedSketchDetails = this.state.sketchDetails;
+            updatedSketchDetails.drawingModel = this.state.topTokenDescriptions[messageNumberMatch[0]];
 
-          let updatedReaderLabels = this.state.readerLabels;
-          updatedReaderLabels.top = updatedSketchDetails.drawingModel;
-          this.setState({
-            sketchDetails: updatedSketchDetails,
-            readerLabels: updatedReaderLabels,
-          })
+            let updatedReaderLabels = this.state.readerLabels;
+            updatedReaderLabels.top = updatedSketchDetails.drawingModel;
+            this.setState({
+              sketchDetails: updatedSketchDetails,
+              readerLabels: updatedReaderLabels,
+            })
+          }
         }
         else {
           // correct word but incorrect number, so change readerlabel[top] to "invalid token"

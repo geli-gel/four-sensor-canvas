@@ -5,7 +5,7 @@ import './DrawingZone.css'
 
 
 
-const DrawingZone = ({canvasWidth, canvasHeight, sketchDetails}) => {
+const DrawingZone = ({canvasWidth, canvasHeight, sketchDetails, onReaderMessage}) => {
   // to-do: add propTypes for shape of sketchDetails?
   return (
     <div className="drawing-zone" >
@@ -18,6 +18,7 @@ const DrawingZone = ({canvasWidth, canvasHeight, sketchDetails}) => {
         drawingAmount={sketchDetails.drawingAmount}
         drawingColor={sketchDetails.drawingColor}
         drawingAnimation={sketchDetails.drawingAnimation}
+        sendMessageToApp={onReaderMessage}
       />
     </div>
   )

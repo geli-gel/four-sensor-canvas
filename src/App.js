@@ -61,26 +61,70 @@ class App extends Component {
     }
   }
 
-  // to-do: add the serial listener for arduino
-  // on 'data' change state that will cause App to rerender
-  // this is where a lot of logic will be - for determining what the sketchDetails are depending on what messages come from arduino
-  // ex:
-  // message: "TOP1"
-  // logic: if regex(letters) = TOP 
-  //          if topTokenDescriptions[regex(numbers)] exists, setState drawingModel, readerLabel[top]: topTokensDesc[regex(numbers)]
-  //          else (if no numbers (means it's "wrong"))
-  //          drawingModel changes to nothing
-  //          readerLabel[top]: changes to "Invalid Token"
+  onReaderMessage(message) {
+    // when a message comes in..
+    // to-do: add the serial listener for arduin
+    // on 'data' change state that will cause App to rerender
+    // this is where a lot of logic will be - for determining what the sketchDetails are depending on what messages come from arduino
+    // ex:
+    // message: "TOP1"
+    // logic: if regex(letters) = TOP 
+    //          if topTokenDescriptions[regex(numbers)] exists, setState drawingModel, readerLabel[top]: topTokensDesc[regex(numbers)]
+    //          else (if no numbers (means it's "wrong"))
+    //          drawingModel changes to nothing
+    //          readerLabel[top]: changes to "Invalid Token"
+    const lettersRegex = /(\D+)/
+    const numbersRegex = /(\d+)/
+
+    const messageWord = message.match(lettersRegex)[0];
+    const messageNumber = message.match(numbersRegex)[0];
+    console.log('onReaderMessage message contents (from App): ', message);
+    console.log('messageWord: ', messageWord);
+    console.log('messageNumber: ', messageNumber);
+
+    switch(messageWord) {
+      case "TOP":
+        if (this.state.topTokenDescriptions[messageNumber]) { // I'm saying if the message has a number, set the sketch details and top reader label to that,
+          let updatedSketchDetails = this.state.sketchDetails;
+          updatedSketchDetails.drawingModel = this.state.topTokenDescriptions[messageNumber];
+
+          let updatedReaderLabels = this.state.readerLabels;
+          updatedReaderLabels.top = updatedSketchDetails.drawingModel;
+          this.setState({
+            sketchDetails: updatedSketchDetails,
+            readerLabels: updatedReaderLabels,
+          })
+        }
+        else {
+          // correct word but incorrect number, so change readerlabel[top] to "invalid token"
+          console.log('invalid token. message: ', message);
+          let updatedReaderLabels = this.state.readerLabels;
+          updatedReaderLabels.top = "Invalid Token";
+          this.setState({
+            readerLabels: updatedReaderLabels,
+          })
+        }
+        break;
+      default:
+        console.log("invalid messageWord")
+    }
+
+    
+    
+  }
+
 
 
 
   render() {
+
     return (
       <div className="App">
         <DrawingZone
           canvasWidth={600}
           canvasHeight={400}
           sketchDetails={this.state.sketchDetails}
+          onReaderMessage={this.onReaderMessage}
         />
         {/* Weird P5Wrapper */}
         {/* <P5Wrapper sketch={sketch}  /> */}

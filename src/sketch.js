@@ -18,6 +18,8 @@ export default function sketch (p) {
   let drawingAmount = 0;
   let canvasWidth = 0;
   let canvasHeight = 0;
+
+  function sendMessageToApp(){};
   // array to hold all drawing objects that are created
   let drawings = [];
 
@@ -36,6 +38,7 @@ export default function sketch (p) {
   // drawingAmount={sketchDetails.drawingAmount}
   // drawingColor={sketchDetails.drawingColor}
   // drawingAnimation=
+  // sendMessageToApp= function onReaderMessage
 
   p.setup = () => {
     p.createCanvas(canvasWidth, canvasHeight, p.WEBGL);
@@ -69,9 +72,11 @@ export default function sketch (p) {
 
     function serialEvent() {
       // read a byte from the serial port:
-      var inByte = serial.read();
+      var inByte = serial.readLine();
       // store it in a global variable:
       console.log(inByte);
+      console.log('typeof inByte',typeof inByte)
+      sendMessageToApp(inByte);      
     };
     
     
@@ -95,6 +100,7 @@ export default function sketch (p) {
     drawingAmount = props.drawingAmount; 
     canvasWidth = props.canvasWidth;
     canvasHeight = props.canvasHeight;
+    sendMessageToApp = props.sendMessageToApp; // it has a warning that sendMessageToApp is a function (which it's supposed to be, which makes me think I'm doing this completely wrong but, it's working!! I think!)
   };
 
   p.draw = () => {

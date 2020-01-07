@@ -15,6 +15,11 @@ const p5 = window.p5; // idk, maybe do the npm install better...
 export default function sketch (p) {
   // props being initialized, will be changed by props soon
   let modelName = ""; // this is from a useful example where they take in a prop and do some math to it before assigning it to a variable that does something on the canvas
+  // also need 
+  let model;
+  let strokePath = null;
+  let x, y;
+
   let drawingAmount = 0;
   let canvasWidth = 0;
   let canvasHeight = 0;
@@ -42,7 +47,11 @@ export default function sketch (p) {
 
   p.setup = () => {
     p.createCanvas(canvasWidth, canvasHeight, p.WEBGL);
-    // drawing1 = new Drawing(p, 600, 400, modelName);   
+    // drawing1 = new Drawing(p, 600, 400, modelName); 
+    
+    // coding train says to put background in setup not in draw
+    p.background(220);
+
     console.log('setup drawingAmount:', drawingAmount)
     console.log('in setup, modelName: ', modelName)
 
@@ -67,34 +76,47 @@ export default function sketch (p) {
     // serial.on('error', serialError);
     // serial.on('close', portClose);
 
-    // TO-DO for sure:
     serial.on('data', serialEvent);
 
     function serialEvent() {
-      // read a byte from the serial port:
       var arduinoMessage = serial.readLine();
-      // store it in a global variable:
-      // console.log(arduinoMessage);
-      // console.log('typeof arduinoMessage',typeof arduinoMessage)
       if (arduinoMessage.length > 1) {
         sendMessageToApp(arduinoMessage);      
       };
     };
     
-    
-
-   
-
+    // testing making a certain number of drawings show up based on what's in props
     for (let i = 0; i < drawingAmount; i++ ) {
       // to-do: make the xStart and yStart different depending on animation/size props
       const xStart = p.random(0, canvasWidth/2);
       const yStart = p.random(0, canvasHeight/2);
-      console.log(`drawing#{i}'s xStart: `, xStart)
-      console.log(`drawing#{i}'s yStart: `, yStart)
+      // console.log(`drawing#{i}'s xStart: `, xStart);
+      // console.log(`drawing#{i}'s yStart: `, yStart);
 
       drawings.push(new Drawing(p, xStart, yStart, modelName))
-    }
+    };
 
+    // testing making a sketch-rnn model get drawn based on what's in props
+    // following along w/ the coding train
+    // https://www.youtube.com/watch?v=pdaNttb7Mr8
+    x = 0;
+    y = 0; // p5 has changed since the video was made and 0,0 is the center of the canvas not width/2
+    model = ml5.sketchRNN(modelName, modelReady);
+
+    function modelReady() {
+      console.log("model ready");
+      model.reset(); // should reset when loading but calling anyway - because this is a machine learning model giving us sequential information, we have to reset to draw a new model
+      model.generate(gotSketch); // gives you a stroke object each time you say "generate" - includes dx, dy, and pen (up, down, or end)
+    };
+
+    function gotSketch(error, s) { // ml5 is written to use error first callbacks (different from p5)
+      if (error) {
+        console.error(error);
+      } else {
+      strokePath = s;
+      console.log(strokePath);
+      }
+    }
   };
 
   p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
@@ -106,15 +128,28 @@ export default function sketch (p) {
   };
 
   p.draw = () => {
-    p.background(100);
-    p.noStroke();
-    p.push();
+    // for the example one
+    // p.background(100);
+    // p.noStroke();
+    // p.push();
 
-    drawings.forEach((drawing) => {
-      drawing.move();
-      drawing.display();
-    })
-    p.pop(); 
+    // drawings.forEach((drawing) => {
+    //   drawing.move();
+    //   drawing.display();
+    // })
+    // p.pop(); 
+
+    // for the coding train one
+    // he said to draw the background only in setup
+    if (strokePath != null) { // he's saying he could control how the draw loop works with the query to the model in a different way, but this is an easy way to do it - draw's just going to loop (what other way is he talking about???)
+      p.stroke(0);
+      p.strokeWeight(4);
+      p.line(x, y, x + strokePath.dx, y + strokePath.dy)
+
+    }
+
+
+
   };
 };
 

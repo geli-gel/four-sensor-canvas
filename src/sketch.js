@@ -72,11 +72,13 @@ export default function sketch (p) {
 
     function serialEvent() {
       // read a byte from the serial port:
-      var inByte = serial.readLine();
+      var arduinoMessage = serial.readLine();
       // store it in a global variable:
-      console.log(inByte);
-      console.log('typeof inByte',typeof inByte)
-      sendMessageToApp(inByte);      
+      // console.log(arduinoMessage);
+      // console.log('typeof arduinoMessage',typeof arduinoMessage)
+      if (arduinoMessage.length > 1) {
+        sendMessageToApp(arduinoMessage);      
+      };
     };
     
     

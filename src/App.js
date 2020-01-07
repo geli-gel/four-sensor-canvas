@@ -61,7 +61,7 @@ class App extends Component {
     }
   }
 
-  onReaderMessage(message) {
+  onReaderMessage = (message) => {
     // when a message comes in..
     // to-do: add the serial listener for arduin
     // on 'data' change state that will cause App to rerender
@@ -76,17 +76,18 @@ class App extends Component {
     const lettersRegex = /(\D+)/
     const numbersRegex = /(\d+)/
 
-    const messageWord = message.match(lettersRegex)[0];
-    const messageNumber = message.match(numbersRegex)[0];
+    const messageWordMatch = message.match(lettersRegex);
+    const messageNumberMatch = message.match(numbersRegex);
     console.log('onReaderMessage message contents (from App): ', message);
-    console.log('messageWord: ', messageWord);
-    console.log('messageNumber: ', messageNumber);
 
-    switch(messageWord) {
+    switch(messageWordMatch[0]) {
       case "TOP":
-        if (this.state.topTokenDescriptions[messageNumber]) { // I'm saying if the message has a number, set the sketch details and top reader label to that,
+        console.log('in switch case "TOP"')
+        console.log('this.state', this.state)
+        if (messageNumberMatch)
+        if (this.state.topTokenDescriptions[messageNumberMatch[0]]) { // I'm saying if the message has a number, set the sketch details and top reader label to that,
           let updatedSketchDetails = this.state.sketchDetails;
-          updatedSketchDetails.drawingModel = this.state.topTokenDescriptions[messageNumber];
+          updatedSketchDetails.drawingModel = this.state.topTokenDescriptions[messageNumberMatch[0]];
 
           let updatedReaderLabels = this.state.readerLabels;
           updatedReaderLabels.top = updatedSketchDetails.drawingModel;

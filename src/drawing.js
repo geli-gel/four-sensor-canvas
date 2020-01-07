@@ -1,12 +1,12 @@
 class Drawing {
 
-  constructor(p, xStart, yStart){
+  constructor(p, xStart, yStart, modelName){
     this.p = p
     this.x = xStart
     this.y = yStart
     //... kind of a work in progress...
     //   this.modelName = modelName
-    console.log('drawing testname from constructor: ', this.testName)
+    console.log('drawing modelName from constructor: ', this.modelName)
   }
 
 

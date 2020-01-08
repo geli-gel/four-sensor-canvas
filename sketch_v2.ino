@@ -33,10 +33,10 @@
 
 // PIN Numbers : RESET + SDAs
 #define RST_PIN         9
-#define SS_1_PIN        10
-#define SS_2_PIN        8
-#define SS_3_PIN        7
-#define SS_4_PIN        6
+#define SS_1_PIN        10   // "Top"
+#define SS_2_PIN        8    // "Left"
+#define SS_3_PIN        7    // "Right"
+#define SS_4_PIN        6    // "Bottom"
 
 
 // List of Tags UIDs // AZ: that are allowed for each reader

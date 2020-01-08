@@ -53,7 +53,7 @@ class App extends Component {
       },
       
       readerLabels: {
-        top: "cat",
+        top: "Empty",
         left: "Empty",
         right: "Empty",
         bottom: "Empty",  
@@ -85,6 +85,7 @@ class App extends Component {
         console.log('in switch case "TOP"')
         console.log('this.state', this.state)
         if (messageNumberMatch) {
+          console.log('number match:', messageNumberMatch[0]);
           if (this.state.topTokenDescriptions[messageNumberMatch[0]]) { // I'm saying if the message has a number that corresponds to a number in this reader's state description, set the sketch details and top reader label to that,
             let updatedSketchDetails = this.state.sketchDetails;
             updatedSketchDetails.drawingModel = this.state.topTokenDescriptions[messageNumberMatch[0]];
@@ -119,6 +120,8 @@ class App extends Component {
 
 
   render() {
+
+    console.log('rendering, state: ', this.state);
 
     return (
       <div className="App">

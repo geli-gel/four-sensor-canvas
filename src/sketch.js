@@ -1,4 +1,5 @@
 import Drawing from './drawing';
+import Drawingv2 from './drawing';
 // import p5 from 'p5';
 // from here: https://github.com/slin12/react-p5-wrapper
 
@@ -68,7 +69,7 @@ export default function sketch (p) {
     // drawing1 = new Drawing(p, 600, 400, modelName); 
     
     // coding train says to put background in setup not in draw
-    p.background(220);
+    p.background(0,0,80);
 
     console.log('setup drawingAmount:', drawingAmount)
     console.log('in setup, modelName: ', modelName)
@@ -128,6 +129,14 @@ export default function sketch (p) {
     canvasWidth = props.canvasWidth;
     canvasHeight = props.canvasHeight;
     sendMessageToApp = props.sendMessageToApp; // it has a warning that sendMessageToApp is a function (which it's supposed to be, which makes me think I'm doing this completely wrong but, it's working!! I think!)
+
+
+    // testing making a sketch-rnn model get drawn based on what's in props
+    // following along w/ the coding train
+    // https://www.youtube.com/watch?v=pdaNttb7Mr8
+    x = p.random(-canvasWidth / 2, canvasWidth / 2);
+    y = p.random(-canvasHeight / 2, canvasHeight / 2);// p5 has changed since the video was made and 0,0 is the center of the canvas not width/2
+    model = ml5.sketchRNN(modelName, modelReady);
   };
 
   p.draw = () => {
@@ -144,11 +153,12 @@ export default function sketch (p) {
 
     // for the coding train one
     // he said to draw the background only in setup
+    // p.translate(canvasWidth / 2, canvasHeight / 2);// he said he'd explain this line but never did! all it is doing is making my drawings happen off canvas so I'm commenting it out.
     if (strokePath != null) { // he's saying he could control how the draw loop works with the query to the model in a different way, but this is an easy way to do it - draw's just going to loop (what other way is he talking about???)
       let newX = x + strokePath.dx * 0.1;
       let newY = y + strokePath.dy * 0.1;
       if (pen == 'down') {
-          p.stroke(0);
+          p.stroke(200,200, 0);
           p.strokeWeight(4);
           p.line(x, y, newX, newY)
         }
@@ -167,6 +177,7 @@ export default function sketch (p) {
         model.generate(gotSketch);
         x = p.random(-canvasWidth / 2, canvasWidth / 2);
         y = p.random(-canvasHeight / 2, canvasHeight / 2);
+        pen = 'down'; // bug found by yt commenter
 
       }
 

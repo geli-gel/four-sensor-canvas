@@ -19,6 +19,7 @@ export default function sketch (p) {
   let model;
   let strokePath = null;
   let x, y;
+  let pen = 'down';
 
   let drawingAmount = 0;
   let canvasWidth = 0;
@@ -32,6 +33,23 @@ export default function sketch (p) {
   let serial;
 
   const portName = '/dev/tty.usbmodem14201';
+
+
+  // trying putting the sketch piece functions out here??
+  function modelReady() {
+    console.log("model ready");
+    model.reset(); // should reset when loading but calling anyway - because this is a machine learning model giving us sequential information, we have to reset to draw a new model
+    model.generate(gotSketch); // gives you a stroke object each time you say "generate" - includes dx, dy, and pen (up, down, or end)
+  };
+
+  function gotSketch(error, s) { // ml5 is written to use error first callbacks (different from p5)
+    if (error) {
+      console.error(error);
+    } else {
+    strokePath = s;
+    // console.log(strokePath);
+    }
+  }
 
 
   // the props passed into the p5wrapper:
@@ -86,37 +104,22 @@ export default function sketch (p) {
     };
     
     // testing making a certain number of drawings show up based on what's in props
-    for (let i = 0; i < drawingAmount; i++ ) {
-      // to-do: make the xStart and yStart different depending on animation/size props
-      const xStart = p.random(0, canvasWidth/2);
-      const yStart = p.random(0, canvasHeight/2);
-      // console.log(`drawing#{i}'s xStart: `, xStart);
-      // console.log(`drawing#{i}'s yStart: `, yStart);
+    // for (let i = 0; i < drawingAmount; i++ ) {
+    //   // to-do: make the xStart and yStart different depending on animation/size props
+    //   const xStart = p.random(0, canvasWidth/2);
+    //   const yStart = p.random(0, canvasHeight/2);
+    //   // console.log(`drawing#{i}'s xStart: `, xStart);
+    //   // console.log(`drawing#{i}'s yStart: `, yStart);
 
-      drawings.push(new Drawing(p, xStart, yStart, modelName))
-    };
+    //   drawings.push(new Drawing(p, xStart, yStart, modelName))
+    // };
 
     // testing making a sketch-rnn model get drawn based on what's in props
     // following along w/ the coding train
     // https://www.youtube.com/watch?v=pdaNttb7Mr8
-    x = 0;
-    y = 0; // p5 has changed since the video was made and 0,0 is the center of the canvas not width/2
+    x = p.random(-canvasWidth / 2, canvasWidth / 2);
+    y = p.random(-canvasHeight / 2, canvasHeight / 2);// p5 has changed since the video was made and 0,0 is the center of the canvas not width/2
     model = ml5.sketchRNN(modelName, modelReady);
-
-    function modelReady() {
-      console.log("model ready");
-      model.reset(); // should reset when loading but calling anyway - because this is a machine learning model giving us sequential information, we have to reset to draw a new model
-      model.generate(gotSketch); // gives you a stroke object each time you say "generate" - includes dx, dy, and pen (up, down, or end)
-    };
-
-    function gotSketch(error, s) { // ml5 is written to use error first callbacks (different from p5)
-      if (error) {
-        console.error(error);
-      } else {
-      strokePath = s;
-      console.log(strokePath);
-      }
-    }
   };
 
   p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
@@ -142,9 +145,30 @@ export default function sketch (p) {
     // for the coding train one
     // he said to draw the background only in setup
     if (strokePath != null) { // he's saying he could control how the draw loop works with the query to the model in a different way, but this is an easy way to do it - draw's just going to loop (what other way is he talking about???)
-      p.stroke(0);
-      p.strokeWeight(4);
-      p.line(x, y, x + strokePath.dx, y + strokePath.dy)
+      let newX = x + strokePath.dx * 0.1;
+      let newY = y + strokePath.dy * 0.1;
+      if (pen == 'down') {
+          p.stroke(0);
+          p.strokeWeight(4);
+          p.line(x, y, newX, newY)
+        }
+      // move x and y to new spot, reset strokePath, set pen for next stroke
+      x = newX;
+      y = newY;
+      pen = strokePath.pen;
+      strokePath = null;
+
+      if (pen !== 'end') {
+        model.generate(gotSketch); // request the next strokePath
+      } else {
+        console.log('drawing complete');
+        //move outside and call 'initializeNewDrawing()'?
+        model.reset();
+        model.generate(gotSketch);
+        x = p.random(-canvasWidth / 2, canvasWidth / 2);
+        y = p.random(-canvasHeight / 2, canvasHeight / 2);
+
+      }
 
     }
 

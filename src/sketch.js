@@ -1,5 +1,5 @@
+// import Drawing from './drawing';
 import Drawing from './drawing';
-import Drawingv2 from './drawing';
 // import p5 from 'p5';
 // from here: https://github.com/slin12/react-p5-wrapper
 
@@ -25,10 +25,13 @@ export default function sketch (p) {
   let drawingAmount = 0;
   let canvasWidth = 0;
   let canvasHeight = 0;
+  let drawingAnimation = "";
+  let sendMessageToApp;
 
-  function sendMessageToApp(){};
   // array to hold all drawing objects that are created
   let drawings = [];
+  // array to hold arrays of line data
+  let currentDrawingLineData = [];
 
   // maybe? 
   let serial;
@@ -53,17 +56,6 @@ export default function sketch (p) {
   }
 
 
-  // the props passed into the p5wrapper:
-  // sketch={sketch} 
-  // canvasWidth={canvasWidth}
-  // canvasHeight={canvasHeight}
-  // modelName={sketchDetails.drawingModel}
-  // drawingSize={sketchDetails.drawingSize}
-  // drawingAmount={sketchDetails.drawingAmount}
-  // drawingColor={sketchDetails.drawingColor}
-  // drawingAnimation=
-  // sendMessageToApp= function onReaderMessage
-
   p.setup = () => {
     p.createCanvas(canvasWidth, canvasHeight, p.WEBGL);
     // drawing1 = new Drawing(p, 600, 400, modelName); 
@@ -71,8 +63,7 @@ export default function sketch (p) {
     // coding train says to put background in setup not in draw
     p.background(0,0,80);
 
-    console.log('setup drawingAmount:', drawingAmount)
-    console.log('in setup, modelName: ', modelName)
+    console.log('in sketch setup, modelName: ', modelName)
 
     // serialport basics from https://itp.nyu.edu/physcomp/labs/labs-serial-communication/lab-serial-input-to-the-p5-js-ide/
     serial = new p5.SerialPort(); // maybe move this outside of setup? i think it belongs here though
@@ -126,10 +117,15 @@ export default function sketch (p) {
   p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
     modelName = props.modelName;
     drawingAmount = props.drawingAmount; 
+    drawingAnimation = props.drawingAnimation;
     canvasWidth = props.canvasWidth;
     canvasHeight = props.canvasHeight;
     sendMessageToApp = props.sendMessageToApp; // it has a warning that sendMessageToApp is a function (which it's supposed to be, which makes me think I'm doing this completely wrong but, it's working!! I think!)
 
+    // leftover props passed into the p5wrapper:
+    // drawingSize={sketchDetails.drawingSize}
+    // drawingAmount={sketchDetails.drawingAmount}
+    // drawingColor={sketchDetails.drawingColor}
 
     // testing making a sketch-rnn model get drawn based on what's in props
     // following along w/ the coding train
@@ -140,6 +136,8 @@ export default function sketch (p) {
   };
 
   p.draw = () => {
+    let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
+
     // for the example one
     // p.background(100);
     // p.noStroke();
@@ -157,10 +155,13 @@ export default function sketch (p) {
     if (strokePath != null) { // he's saying he could control how the draw loop works with the query to the model in a different way, but this is an easy way to do it - draw's just going to loop (what other way is he talking about???)
       let newX = x + strokePath.dx * 0.1;
       let newY = y + strokePath.dy * 0.1;
-      if (pen == 'down') {
+      if (pen === 'down') {
           p.stroke(200,200, 0);
           p.strokeWeight(4);
-          p.line(x, y, newX, newY)
+          p.line(x, y, newX, newY);
+          // add the line data to array
+          currentDrawingLineData.push([x,y]);
+          currentDrawingLineData.push([newX,newY]);
         }
       // move x and y to new spot, reset strokePath, set pen for next stroke
       x = newX;
@@ -172,17 +173,32 @@ export default function sketch (p) {
         model.generate(gotSketch); // request the next strokePath
       } else {
         console.log('drawing complete');
+        // create and push a new Drawing object from the currentDrawingLineData into the drawings array, and reset currentDrawingLineData to empty
+        // what drawing v2 takes in:   constructor(p, xStart, yStart, modelName, lineData, drawingAnimation )
+        drawings.push(new Drawing(p, x, y, modelName, currentDrawingLineData, drawingAnimation));
+
+        // https://www.jstips.co/en/javascript/two-ways-to-empty-an-array/
+        currentDrawingLineData.length = 0;
+  
         //move outside and call 'initializeNewDrawing()'?
         model.reset();
         model.generate(gotSketch);
         x = p.random(-canvasWidth / 2, canvasWidth / 2);
         y = p.random(-canvasHeight / 2, canvasHeight / 2);
         pen = 'down'; // bug found by yt commenter
-
       }
 
     }
 
+    // after working on generating a new drawing, display/update all of them
+
+    if (drawings.length > 0) {
+      for (let drawingObject of drawings) { // apparently you can loop through the array like this
+        drawingObject.update(t)
+        drawingObject.display();
+      }
+
+    }
 
 
   };

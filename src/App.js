@@ -14,7 +14,7 @@ class App extends Component {
         drawingSize: "",
         drawingAmount: 4,
         drawingColor: "",
-        drawingAnimation: "",
+        drawingAnimation: "wiggleAround",
       },
 
       topTokenDescriptions: {

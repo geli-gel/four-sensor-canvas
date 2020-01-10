@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-// import P5Wrapper from 'react-p5-wrapper'; // the legit one
 import DrawingZone from './components/DrawingZone';
 import SettingsZone from './components/SettingsZone';
-// import P5Wrapper from "./P5Wrapper"; // the weird one
 
 class App extends Component {
   constructor(props) {
@@ -62,17 +60,6 @@ class App extends Component {
   }
 
   onReaderMessage = (message) => {
-    // when a message comes in..
-    // to-do: add the serial listener for arduin
-    // on 'data' change state that will cause App to rerender
-    // this is where a lot of logic will be - for determining what the sketchDetails are depending on what messages come from arduino
-    // ex:
-    // message: "TOP1"
-    // logic: if regex(letters) = TOP 
-    //          if topTokenDescriptions[regex(numbers)] exists, setState drawingModel, readerLabel[top]: topTokensDesc[regex(numbers)]
-    //          else (if no numbers (means it's "wrong"))
-    //          drawingModel changes to nothing
-    //          readerLabel[top]: changes to "Invalid Token"
     const lettersRegex = /(\D+)/
     const numbersRegex = /(\d+)/
 
@@ -110,13 +97,8 @@ class App extends Component {
         break;
       default:
         console.log("invalid messageWord")
-    }
-
-    
-    
+    }    
   }
-
-
 
 
   render() {
@@ -131,13 +113,10 @@ class App extends Component {
           sketchDetails={this.state.sketchDetails}
           onReaderMessage={this.onReaderMessage}
         />
-        {/* Weird P5Wrapper */}
-        {/* <P5Wrapper sketch={sketch}  /> */}
 
         <SettingsZone
           readerLabels={this.state.readerLabels}
         />
-
 
       </div>
     );

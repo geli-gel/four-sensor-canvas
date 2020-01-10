@@ -137,13 +137,13 @@ export default function sketch (p) {
   
   p.draw = () => {
 
-    // p.background(0,0,80);
+    p.background(0,0,80);
 
 
     let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
     
     // update(move) and display any existing drawingsArray
-    // p.push();
+    p.push();
     if (drawingsArray.length > 0) {
       console.log(drawingsArray);
       for (let drawingObject of drawingsArray) { // apparently you can loop through the array like this
@@ -153,7 +153,7 @@ export default function sketch (p) {
       }
   
     }
-    // p.pop();
+    p.pop();
 
 
     // for the example one
@@ -194,17 +194,18 @@ export default function sketch (p) {
         console.log('drawing complete');
         // create and push a new Drawing object from the currentDrawingLineData into the drawingsArray array, and reset currentDrawingLineData to empty
         // what drawing v2 takes in:   constructor(p, xStart, yStart, modelName, lineData, drawingAnimation )
-        drawingsArray.push(new Drawing(p, 0, 0, modelName, currentDrawingLineData, drawingAnimation));
+        const lineData = [...currentDrawingLineData]; // copy array
+        drawingsArray.push(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation));
 
-        // //move outside and call 'initializeNewDrawing()'?
-        // model.reset();
-        // model.generate(gotSketch);
-        // x = p.random(-canvasWidth / 2, canvasWidth / 2);
-        // y = p.random(-canvasHeight / 2, canvasHeight / 2);
-        // pen = 'down'; // bug found by yt commenter
+        //move outside and call 'initializeNewDrawing()'?
+        model.reset();
+        model.generate(gotSketch);
+        x = p.random(-canvasWidth / 2, canvasWidth / 2);
+        y = p.random(-canvasHeight / 2, canvasHeight / 2);
+        pen = 'down'; // bug found by yt commenter
 
         // https://www.jstips.co/en/javascript/two-ways-to-empty-an-array/
-        // currentDrawingLineData.length = 0;
+        currentDrawingLineData.length = 0;
       }
 
 

@@ -30,7 +30,7 @@ class Drawing {
 
 
 
-    this.p.background(0,0,80);
+    // this.p.background(0,0,80);
 
 
     

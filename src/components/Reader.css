@@ -1,29 +1,51 @@
 .reader {
-  display: flex;
+  /* display: flex;
   width: 150px;
   height: 70px;
-  background-color: antiquewhite;
   padding: 6px;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; */
+
+  background-color: antiquewhite;
+
+
+  position: absolute;
+  width: 40%;
+  height: 40%;
 }
 
-.reader-label {
-  
+.reader span {
+    display: block;
+    transform: translate(-40% -40%);
+    -webkit-transform: translate(-40%, -40%) rotate(-45deg);
+     -ms-transform: translate(-40%, -40%) rotate(-45deg);
+     -moz-transform: translate(-40%, -40%) rotate(-45deg);
+    top: 40%;
+    left: 40%;
+    position: absolute;
 }
+
 
 .top {
-
+  left: 0;
+  top: 0;
+  /* background: red; */
 }
 
 .left {
-  float: left;
+  left: 0;
+  bottom: 0;
+  /* background: green; */
 }
 
 .right {
-
+  right: 0;
+  top: 0;
+  /* background: yellow; */
 }
 
 .bottom {
-
+  right: 0;
+  bottom: 0;
+  /* background: blue; */
 }

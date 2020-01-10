@@ -1,5 +1,27 @@
-.settings-zone {
-  display:flex;
-  flex-direction:column;
-  justify-content: space-evenly;
+.all-readers {
+  display: block;
+  float: right;
+  /* id="cover-logo */
+  position: inherit;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  /* margin: auto; */
+  margin-top: 60px;
+  margin-left: 40px;
+  width: 30%;
+  height: 10px;
+  padding: 15% 0;
+  background: #FFF;
+  text-align: center;
+  -ms-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
+/* got help with diagonal menu from:  */
+/* https://stackoverflow.com/questions/32456864/create-a-responsive-diamond-shape-containing-4-separate-diamonds-with-centered-t */
+/* and accompanying demo: */
+/* http://jsfiddle.net/39pq7dhy/4/ */

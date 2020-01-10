@@ -18,7 +18,7 @@ const SettingsZone = ({readerLabels}) => {
   });
 
   return (
-    <div className="settings-zone" >
+    <div className="all-readers">
       {readers}
     </div>
   )

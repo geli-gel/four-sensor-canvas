@@ -1,5 +1,8 @@
 .drawing-zone {
-  display:flex;
-  flex-direction:column;
-  margin-left: -50px;
+  /* display:flex;
+  flex-direction:column; */
+  margin-left: 5px;
+  margin-right: 35px;
+  display: block;
+  float: left;
 }

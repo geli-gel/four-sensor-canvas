@@ -112,21 +112,18 @@ export default function sketch (p) {
       p.background(0,0,80);
       console.log(drawingsArray);
       for (let drawingObject of drawingsArray) { 
-        drawingObject.update(t)
+        drawingObject.update(t);
         drawingObject.display();
-
-        // ALSO display the current bee beeing drawn (since it hasn't been made into an object yet)
-        p.beginShape();
-        for (let lineParts of currentDrawingLineData) {
-          p.vertex(lineParts[0], lineParts[1]);
-        };
-        p.endShape();
-
-
       };
-  
     }
     p.pop();
+
+    // ALSO display the current bee beeing drawn (since it hasn't been made into an object yet)
+    p.beginShape();
+    for (let lineParts of currentDrawingLineData) {
+      p.vertex(lineParts[0], lineParts[1]);
+    };
+    p.endShape();
 
     // for the coding train one
     // p.translate(canvasWidth / 2, canvasHeight / 2);// he said he'd explain this line but never did! all it is doing is making my drawingsArray happen off canvas so I'm commenting it out.
@@ -142,7 +139,7 @@ export default function sketch (p) {
           // add the line data to array
           currentDrawingLineData.push([x,y]);
           currentDrawingLineData.push([newX,newY]);
-          console.log(currentDrawingLineData);
+          // console.log(currentDrawingLineData);
 
         }
       // move x and y to new spot, reset strokePath, set pen for next stroke

@@ -137,7 +137,9 @@ export default function sketch (p) {
   
   p.draw = () => {
 
-    p.background(0,0,80);
+    p.noFill();
+
+    // p.background(0,0,80);
 
 
     let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
@@ -145,12 +147,21 @@ export default function sketch (p) {
     // update(move) and display any existing drawingsArray
     p.push();
     if (drawingsArray.length > 0) {
+      p.background(0,0,80);
       console.log(drawingsArray);
       for (let drawingObject of drawingsArray) { // apparently you can loop through the array like this
-        // p.background(0,0,80);
         drawingObject.update(t)
         drawingObject.display();
-      }
+
+        // ALSO display the current bee beeing drawn
+        p.beginShape();
+        for (let lineParts of currentDrawingLineData) {
+          p.vertex(lineParts[0], lineParts[1]);
+        };
+        p.endShape();
+
+
+      };
   
     }
     p.pop();
@@ -174,13 +185,16 @@ export default function sketch (p) {
       let newX = x + strokePath.dx * 0.1;
       let newY = y + strokePath.dy * 0.1;
       if (pen === 'down') {
+          // draw immediately
           p.stroke(200,200, 0);
           p.strokeWeight(4);
           p.line(x, y, newX, newY);
+
           // add the line data to array
           currentDrawingLineData.push([x,y]);
           currentDrawingLineData.push([newX,newY]);
           console.log(currentDrawingLineData);
+
         }
       // move x and y to new spot, reset strokePath, set pen for next stroke
       x = newX;

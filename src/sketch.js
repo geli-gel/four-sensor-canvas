@@ -137,7 +137,7 @@ export default function sketch (p) {
   
   p.draw = () => {
 
-    p.background(0,0,80);
+    // p.background(0,0,80);
 
 
     let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)

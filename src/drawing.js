@@ -30,7 +30,10 @@ class Drawing {
 
 
 
-    // this.p.background(0,0,80);
+    this.p.background(0,0,80);
+
+
+    
     console.log('in Drawing, preparing to display the drawing')
     console.log('this.lineData: ', this.lineData);
     this.p.stroke(200,200, 0);

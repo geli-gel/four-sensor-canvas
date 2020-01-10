@@ -18,15 +18,21 @@ class Drawing {
     this.x = this.x + this.p.random(-5,5);
     this.y = this.y + this.p.random(-5,5);
     console.log('wiggled the drawing')
-    // to-do: make move take in a type parameter and do a case-switch with how to move it (i think?)
-    // this.x += this.p.random(-this.speed, this.speed)
   }
 
   // to-do: for bonk - what to do if it's reached an edge
 
 
   display() {
+
+    // this.p.ellipse(this.x, this.y, 5);
+
+
+
+
+    // this.p.background(0,0,80);
     console.log('in Drawing, preparing to display the drawing')
+    console.log('this.lineData: ', this.lineData);
     this.p.stroke(200,200, 0);
     this.p.strokeWeight(4);
     // this.p.noFill();

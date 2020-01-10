@@ -29,7 +29,7 @@ export default function sketch (p) {
   let sendMessageToApp;
 
   // array to hold all drawing objects that are created
-  let drawings = [];
+  let drawingsArray = [];
   // array to hold arrays of line data
   let currentDrawingLineData = [];
 
@@ -95,7 +95,7 @@ export default function sketch (p) {
       };
     };
     
-    // testing making a certain number of drawings show up based on what's in props
+    // testing making a certain number of drawingsArray show up based on what's in props
     // for (let i = 0; i < drawingAmount; i++ ) {
     //   // to-do: make the xStart and yStart different depending on animation/size props
     //   const xStart = p.random(0, canvasWidth/2);
@@ -103,7 +103,7 @@ export default function sketch (p) {
     //   // console.log(`drawing#{i}'s xStart: `, xStart);
     //   // console.log(`drawing#{i}'s yStart: `, yStart);
 
-    //   drawings.push(new Drawing(p, xStart, yStart, modelName))
+    //   drawingsArray.push(new Drawing(p, xStart, yStart, modelName))
     // };
 
     // testing making a sketch-rnn model get drawn based on what's in props
@@ -123,7 +123,7 @@ export default function sketch (p) {
     sendMessageToApp = props.sendMessageToApp; // it has a warning that sendMessageToApp is a function (which it's supposed to be, which makes me think I'm doing this completely wrong but, it's working!! I think!)
 
     // leftover props passed into the p5wrapper:
-    // drawingSize={sketchDetails.drawingSize}
+    // drawingsArrayize={sketchDetails.drawingsArrayize}
     // drawingAmount={sketchDetails.drawingAmount}
     // drawingColor={sketchDetails.drawingColor}
 
@@ -134,16 +134,30 @@ export default function sketch (p) {
     y = p.random(-canvasHeight / 2, canvasHeight / 2);// p5 has changed since the video was made and 0,0 is the center of the canvas not width/2
     model = ml5.sketchRNN(modelName, modelReady);
   };
-
+  
   p.draw = () => {
     let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
+    
+    // update(move) and display any existing drawingsArray
+    // p.push();
+    if (drawingsArray.length > 0) {
+      console.log(drawingsArray);
+      for (let drawingObject of drawingsArray) { // apparently you can loop through the array like this
+        // p.background(0,0,80);
+        drawingObject.update(t)
+        drawingObject.display();
+      }
+  
+    }
+    // p.pop();
+
 
     // for the example one
     // p.background(100);
     // p.noStroke();
     // p.push();
 
-    // drawings.forEach((drawing) => {
+    // drawingsArray.forEach((drawing) => {
     //   drawing.move();
     //   drawing.display();
     // })
@@ -151,7 +165,7 @@ export default function sketch (p) {
 
     // for the coding train one
     // he said to draw the background only in setup
-    // p.translate(canvasWidth / 2, canvasHeight / 2);// he said he'd explain this line but never did! all it is doing is making my drawings happen off canvas so I'm commenting it out.
+    // p.translate(canvasWidth / 2, canvasHeight / 2);// he said he'd explain this line but never did! all it is doing is making my drawingsArray happen off canvas so I'm commenting it out.
     if (strokePath != null) { // he's saying he could control how the draw loop works with the query to the model in a different way, but this is an easy way to do it - draw's just going to loop (what other way is he talking about???)
       let newX = x + strokePath.dx * 0.1;
       let newY = y + strokePath.dy * 0.1;
@@ -162,6 +176,7 @@ export default function sketch (p) {
           // add the line data to array
           currentDrawingLineData.push([x,y]);
           currentDrawingLineData.push([newX,newY]);
+          console.log(currentDrawingLineData);
         }
       // move x and y to new spot, reset strokePath, set pen for next stroke
       x = newX;
@@ -173,32 +188,24 @@ export default function sketch (p) {
         model.generate(gotSketch); // request the next strokePath
       } else {
         console.log('drawing complete');
-        // create and push a new Drawing object from the currentDrawingLineData into the drawings array, and reset currentDrawingLineData to empty
+        // create and push a new Drawing object from the currentDrawingLineData into the drawingsArray array, and reset currentDrawingLineData to empty
         // what drawing v2 takes in:   constructor(p, xStart, yStart, modelName, lineData, drawingAnimation )
-        drawings.push(new Drawing(p, x, y, modelName, currentDrawingLineData, drawingAnimation));
+        drawingsArray.push(new Drawing(p, 0, 0, modelName, currentDrawingLineData, drawingAnimation));
+
+        // //move outside and call 'initializeNewDrawing()'?
+        // model.reset();
+        // model.generate(gotSketch);
+        // x = p.random(-canvasWidth / 2, canvasWidth / 2);
+        // y = p.random(-canvasHeight / 2, canvasHeight / 2);
+        // pen = 'down'; // bug found by yt commenter
 
         // https://www.jstips.co/en/javascript/two-ways-to-empty-an-array/
-        currentDrawingLineData.length = 0;
-  
-        //move outside and call 'initializeNewDrawing()'?
-        model.reset();
-        model.generate(gotSketch);
-        x = p.random(-canvasWidth / 2, canvasWidth / 2);
-        y = p.random(-canvasHeight / 2, canvasHeight / 2);
-        pen = 'down'; // bug found by yt commenter
+        // currentDrawingLineData.length = 0;
       }
 
-    }
 
-    // after working on generating a new drawing, display/update all of them
+    };
 
-    if (drawings.length > 0) {
-      for (let drawingObject of drawings) { // apparently you can loop through the array like this
-        drawingObject.update(t)
-        drawingObject.display();
-      }
-
-    }
 
 
   };

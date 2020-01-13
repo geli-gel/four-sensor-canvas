@@ -49,7 +49,7 @@ String tagarray[][10] = {
 //  {"44 CF A9 23", "44 D5 DD 23", "54 04 DD 23", "54 1D B4 23", "54 26 D9 23", "76 EB 41 23", "86 88 A5 23", "B2 12 F1 2D", "B2 D6 76 2D", "F5 D1 07 21" },
 
 // no spaces in between to match uidString
-  {"0590DB22", "154A4A22", "15B9D222", "15C3FF22", "15C94622", "442B9D23"},
+  {"590DB22", "154A4A22", "15B9D222", "15C3FF22", "15C94622", "442B9D23"}, // to-do: find out why leading 0 not going into uidString (for *0*590DB22)
   {"44498723", "44721823", "447C7E23"}, 
   {"44834F23", "449AB623", "44B00B23", "44B96623"},
   {"44CFA923", "44D5DD23", "5404DD23", "541DB423", "5426D923", "76EB4123", "8688A523", "B212F12D", "B2D6762D", "F5D10721" },
@@ -85,6 +85,7 @@ void setup() {
   while (!Serial);              // Do nothing if no serial port is opened (added for Arduinos based on ATMEGA32U4)
 
   SPI.begin();                  // Init SPI bus
+  delay(4);
 
 
   /* looking for MFRC522 readers */
@@ -95,9 +96,10 @@ void setup() {
 //    Serial.print(F("Reader "));
 //    Serial.print(reader + 1);
 //    Serial.print(F(": "));
-//    mfrc522[reader].PCD_DumpVersionToSerial();
+    mfrc522[reader].PCD_DumpVersionToSerial();
     mfrc522[reader].PCD_SetAntennaGain(mfrc522[reader].RxGain_max);
   }
+
 }
 
 /*
@@ -107,8 +109,7 @@ void setup() {
 void loop() {
 
 //  for (uint8_t reader = 0; reader < NR_OF_READERS; reader++) {
-  for (int reader = 0; reader < NR_OF_READERS; reader++) {  // AZ: changed to int from uint8_t
-
+  for (uint8_t reader = 0; reader < NR_OF_READERS; reader++) {  // AZ: changed to int from uint8_t
     // Looking for new cards
     if (mfrc522[reader].PICC_IsNewCardPresent() && mfrc522[reader].PICC_ReadCardSerial()) {
 //      Serial.print(F("Reader "));
@@ -134,10 +135,12 @@ void loop() {
       // Show some details of the PICC (that is: the tag/card)
 //      Serial.print(F(": Card UID:"));
       dump_byte_array(mfrc522[reader].uid.uidByte, mfrc522[reader].uid.size); // AZ: this saves the read card's UID as a string into uidString
-//      Serial.println();
+      // Serial.println();
+      // Serial.println(uidString);
 
 // Look at each UID in the chosen reader's array
       for (int i = 0; i < (sizeof(tagarray[reader]) / sizeof(tagarray[reader][0]) ); i++)        //tagarray's columns
+        
         {
           if ( uidString.compareTo(tagarray[reader][i]) == 0)  //Comparing the UID in the buffer to the UID in uidString (from rfid)
           {
@@ -188,8 +191,8 @@ void loop() {
 */
 void dump_byte_array(byte * buffer, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
-//    Serial.print(buffer[i] < 0x10 ? " 0" : " ");
-//    Serial.print(buffer[i], HEX);
+    // Serial.print(buffer[i] < 0x10 ? " 0" : " ");
+    // Serial.print(buffer[i], HEX);
 //    https://arduino.stackexchange.com/questions/53258/how-to-store-an-rfid-tag-number-in-a-string
     String uid_part = String(buffer[i], HEX);
     uid_part.toUpperCase();

@@ -9,6 +9,7 @@ export default function sketch (p) {
   let canvasWidth = 0;
   let canvasHeight = 0;
   let drawingAnimation = "";
+  let drawingSize = 0.1;
   let sendMessageToApp;
   
   // ml5 model, stroke, tracking and drawing initializing variables
@@ -21,6 +22,9 @@ export default function sketch (p) {
   // array to hold all drawing objects that are created
   let drawingsArray = [];
 
+  // object to hold all flocking boids
+  let flock;
+
   // p5.serialport variables
   let serial;
   const portName = '/dev/tty.usbmodem14201'; // hard-coded to my computer's port recieving data from Arduino
@@ -29,6 +33,7 @@ export default function sketch (p) {
   function modelReady() {
     console.log("model ready");
     model.reset();
+    strokePath = null;
     model.generate(gotSketch); // model.generate returns an object containing stroke path and pen status which is passed into gotSketch
   };
 
@@ -44,6 +49,9 @@ export default function sketch (p) {
   p.setup = () => {
     p.createCanvas(canvasWidth, canvasHeight, p.WEBGL);
     p.background(0,0,80);
+
+    // setup for flocking animation
+    flock = new Flock();
 
     console.log('in sketch setup, modelName: ', modelName)
 
@@ -86,31 +94,35 @@ export default function sketch (p) {
     modelName = props.modelName;
     drawingAmount = props.drawingAmount; 
     drawingAnimation = props.drawingAnimation;
+    drawingSize = props.drawingSize;
     canvasWidth = props.canvasWidth;
     canvasHeight = props.canvasHeight;
     sendMessageToApp = props.sendMessageToApp; 
 
     // leftover props passed into the p5wrapper:
-    // drawingsize={sketchDetails.drawingsize}
     // drawingAmount={sketchDetails.drawingAmount}
     // drawingColor={sketchDetails.drawingColor}
 
     x = p.random(-canvasWidth / 2, canvasWidth / 2);
     y = p.random(-canvasHeight / 2, canvasHeight / 2);
     model = ml5.sketchRNN(modelName, modelReady);
+    currentDrawingLineData.length = 0;
   };
   
   p.draw = () => {
-
+    
     p.noFill();
-
+    
     let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
+    
+    // FIRST update the flock
+    flock.run();
     
     // update location of and display any existing drawings in drawingsArray
     p.push();
     if (drawingsArray.length > 0) {
       p.background(0,0,80);
-      console.log(drawingsArray);
+      // console.log(drawingsArray);
       for (let drawingObject of drawingsArray) { 
         drawingObject.update(t);
         drawingObject.display();
@@ -118,18 +130,24 @@ export default function sketch (p) {
     }
     p.pop();
 
+    // 
+
     // ALSO display the current bee beeing drawn (since it hasn't been made into an object yet)
-    p.beginShape();
-    for (let lineParts of currentDrawingLineData) {
-      p.vertex(lineParts[0], lineParts[1]);
-    };
-    p.endShape();
+    // IF
+    if (strokePath != null) {
+      p.beginShape();
+      for (let lineParts of currentDrawingLineData) {
+        p.vertex(lineParts[0], lineParts[1]);
+      };
+      p.endShape();
+    }
+
 
     // for the coding train one
     // p.translate(canvasWidth / 2, canvasHeight / 2);// he said he'd explain this line but never did! all it is doing is making my drawingsArray happen off canvas so I'm commenting it out.
     if (strokePath != null) { // he's saying he could control how the draw loop works with the query to the model in a different way, but this is an easy way to do it - draw's just going to loop (what other way is he talking about???)
-      let newX = x + strokePath.dx * 0.1;
-      let newY = y + strokePath.dy * 0.1;
+      let newX = x + strokePath.dx * drawingSize;
+      let newY = y + strokePath.dy * drawingSize;
       if (pen === 'down') {
           // draw immediately
           p.stroke(200,200, 0);
@@ -152,9 +170,16 @@ export default function sketch (p) {
         model.generate(gotSketch); // request the next strokePath
       } else {
         console.log('drawing complete');
-        // create and push a new Drawing object from the currentDrawingLineData into the drawingsArray array, and reset currentDrawingLineData to empty
+
         const lineData = [...currentDrawingLineData]; // copy array
-        drawingsArray.push(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation));
+        
+        // add to flock as a boid if drawingAnimation is flock
+        if (drawingAnimation === "flock") {
+          flock.addBoid(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight));
+        } else { // otherwise just push a new drawing object
+          // create and push a new Drawing object from the currentDrawingLineData into the drawingsArray array, and reset currentDrawingLineData to empty
+          drawingsArray.push(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight));
+        }
 
         //move outside and call 'initializeNewDrawing()'?
         model.reset();
@@ -169,4 +194,22 @@ export default function sketch (p) {
     };
 
   };
+
+  function Flock() {
+    this.boids = [];
+  }
+
+  Flock.prototype.run = function() {
+    p.background(0,0,80);
+
+    for (let i = 0; i < this.boids.length; i++) {
+      this.boids[i].run(this.boids); // passing the entire boids array to each boid and calling boid.run
+    }
+  }
+
+  Flock.prototype.addBoid = function(b) {
+    this.boids.push(b);
+  }
+
+
 };

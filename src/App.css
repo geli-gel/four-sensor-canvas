@@ -44,3 +44,28 @@
     transform: rotate(360deg);
   }
 }
+
+.settings-zone {
+  position: relative;
+  width: 40%;
+  height: 40%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.readers-wrapper {
+  position: inherit;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 10%;
+  height: 0;
+  padding: 5% 0;
+  border: solid 1px rgba(255,255,255,0.2);
+}

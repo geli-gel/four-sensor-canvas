@@ -13,11 +13,11 @@ const DrawingZone = ({canvasWidth, canvasHeight, sketchDetails, onReaderMessage}
         sketch={sketch} 
         canvasWidth={canvasWidth}
         canvasHeight={canvasHeight}
-        modelName={sketchDetails.drawingModel}
+        modelName={sketchDetails["TOP"]}
+        drawingAnimation={sketchDetails["LEFT"]}
+        drawingAmount={sketchDetails["RIGHT"]}
+        drawingColor={sketchDetails["BOTTOM"]}
         drawingSize={sketchDetails.drawingSize}
-        drawingAmount={sketchDetails.drawingAmount}
-        drawingColor={sketchDetails.drawingColor}
-        drawingAnimation={sketchDetails.drawingAnimation}
         sendMessageToApp={onReaderMessage}
       />
     </div>

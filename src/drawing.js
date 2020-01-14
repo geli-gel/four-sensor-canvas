@@ -10,17 +10,18 @@ class Drawing {
     this.lineData = lineData;
     this.drawingAnimation = drawingAnimation;
 
-    this.canvasWidth = canvasWidth;
-    this.canvasHeight = canvasHeight;
+    this.canvasWidth = Number(canvasWidth);
+    this.canvasHeight = Number(canvasHeight);
     
     // flock setup stuff goes here
-    // to-do: decide if p5.Vector.random2D() plus setMag is better for velocity (see https://www.youtube.com/watch?v=mhjuuHl6qHM 6:43)
+    // modified https://p5js.org/examples/simulate-flocking.html
+
     this.acceleration = this.p.createVector(0,0);
-    this.velocity = this.p.createVector(this.p.random(-1,1), this.p.random(-1,1));
+    this.velocity = p5.Vector.random2D();
     this.position = this.p.createVector(this.x,this.y); // I have this.x, this.y start points. hmm.
-    this.r = 2.0;
+    this.r = 100; // need to set to approximate "radius" of a drawing
     this.maxspeed = 3;
-    this.maxforce = 0.05;
+    this.maxforce = 0.01;
   }
 
 
@@ -86,7 +87,8 @@ class Drawing {
   }
 
   render() {
-    // let theta = this.velocity.heading() + radians(90);
+    // Draw a triangle rotated in the direction of velocity
+    // let theta = this.velocity.heading() + this.p.radians(90);
     // this.p.fill(127);
     // this.p.stroke(200);
     // this.p.push();
@@ -96,15 +98,17 @@ class Drawing {
     // this.p.vertex(0, -this.r * 2);
     // this.p.vertex(-this.r, this.r * 2);
     // this.p.vertex(this.r, this.r * 2);
-    // this.p.endShape(CLOSE);
+    // this.p.endShape(this.p.CLOSE);
     // this.p.pop();
-    //
+    
     this.p.push();
+    this.p.translate(this.position.x, this.position.y);
     this.p.stroke(200,200, 0);
     this.p.strokeWeight(4);
     this.p.beginShape(this.p.LINES);
     for (let lineParts of this.lineData) {
-      this.p.vertex(lineParts[0] + this.position.x, lineParts[1] + this.position.y);
+      // this.p.vertex(lineParts[0] + this.position.x, lineParts[1] + this.position.y);
+      this.p.vertex(lineParts[0], lineParts[1]);
     }
     this.p.endShape();
     this.p.pop();
@@ -112,15 +116,15 @@ class Drawing {
 
   // wraparound
   borders() {
-    if (this.position.x < -this.r) this.position.x = this.canvasWidth + this.r;
-    if (this.position.y < -this.r) this.position.y = this.canvasHeight + this.r;
+    if (this.position.x < -this.r)  this.position.x = this.canvasWidth + this.r;
+    if (this.position.y < -this.r)  this.position.y = this.canvasHeight + this.r;
     if (this.position.x > this.canvasWidth + this.r) this.position.x = -this.r;
     if (this.position.y > this.canvasHeight + this.r) this.position.y = -this.r;
   }
 
   // Separation (steer away from nearby boids)
   separate(boids) {
-    let desiredSeparation = 10.0;
+    let desiredSeparation = 2.0;
     let steer = this.p.createVector(0,0);
     let count = 0;
     // check each boid IF there's a boid.
@@ -164,7 +168,8 @@ class Drawing {
     for (let i = 0; i < boids.length; i++) {
       // let d = this.p.Vector.dist(this.position, boids[i].position);
       let d = p5.Vector.dist(this.position, boids[i].position);
-      if ((d > 0) && (d < neighborDist)) {
+      // if ((d > 0) && (d < neighborDist)) {
+      if ((boids[i] !== this) && (d < neighborDist)) {
         sum.add(boids[i].velocity);
         count++;
       }

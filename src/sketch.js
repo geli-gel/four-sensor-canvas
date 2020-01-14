@@ -177,8 +177,8 @@ export default function sketch (p) {
         // add to flock as a boid if drawingAnimation is flock
         console.log('sketch drawingAnimation: ', drawingAnimation);
         console.log('sketch drawingAnimation === "flock": ', drawingAnimation === "flock");
-        
-        if (drawingAnimation === "flock") {
+        let animationType = String(drawingAnimation);
+        if (animationType === "flock") {
           flock.addBoid(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight));
         } else { // otherwise just push a new drawing object
           // create and push a new Drawing object from the currentDrawingLineData into the drawingsArray array, and reset currentDrawingLineData to empty

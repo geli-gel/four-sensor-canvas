@@ -114,14 +114,15 @@ export default function sketch (p) {
     p.noFill();
     
     let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
-    
+    p.background(0,0,80);
+
     // FIRST update the flock
     flock.run();
     
     // update location of and display any existing drawings in drawingsArray
     p.push();
     if (drawingsArray.length > 0) {
-      p.background(0,0,80);
+      // p.background(0,0,80);
       // console.log(drawingsArray);
       for (let drawingObject of drawingsArray) { 
         drawingObject.update(t);
@@ -174,6 +175,9 @@ export default function sketch (p) {
         const lineData = [...currentDrawingLineData]; // copy array
         
         // add to flock as a boid if drawingAnimation is flock
+        console.log('sketch drawingAnimation: ', drawingAnimation);
+        console.log('sketch drawingAnimation === "flock": ', drawingAnimation === "flock");
+        
         if (drawingAnimation === "flock") {
           flock.addBoid(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight));
         } else { // otherwise just push a new drawing object
@@ -200,7 +204,7 @@ export default function sketch (p) {
   }
 
   Flock.prototype.run = function() {
-    p.background(0,0,80);
+    // p.background(0,0,80);
 
     for (let i = 0; i < this.boids.length; i++) {
       this.boids[i].run(this.boids); // passing the entire boids array to each boid and calling boid.run

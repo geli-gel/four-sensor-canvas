@@ -34,10 +34,10 @@ class Drawing {
 
   // flocking functions
   run(boids) {
-    this.flock(boids);
-    this.flockUpdate(); // theirs is called update
-    this.borders();
-    this.render(); // needs to be different from display since using position instead of x and y
+      this.flock(boids);
+      this.flockUpdate(); // theirs is called update
+      this.borders();
+      this.render(); // needs to be different from display since using position instead of x and y
   }
 
   applyForce(force) {
@@ -47,17 +47,21 @@ class Drawing {
   flock(boids) { // trying to modify https://p5js.org/examples/simulate-flocking.html to work with my system    
     // "run"
     // flock(boids)
-    let sep = this.separate(boids); 
-    let ali = this.align(boids);
-    let coh = this.cohesion(boids);
-    // arbitrarily weight these forces
-    sep.mult(1.5);
-    ali.mult(1.0);
-    coh.mult(1.0);
-    // add the force vectors to acceleration
-    this.applyForce(sep);
-    this.applyForce(ali);
-    this.applyForce(coh);
+    if (boids) {
+      if (boids.length > 0) {
+        let sep = this.separate(boids); 
+        let ali = this.align(boids);
+        let coh = this.cohesion(boids);
+        // arbitrarily weight these forces
+        sep.mult(1.5);
+        ali.mult(1.0);
+        coh.mult(1.0);
+        // add the force vectors to acceleration
+        this.applyForce(sep);
+        this.applyForce(ali);
+        this.applyForce(coh);
+      }
+    }
   }
 
   flockUpdate() {
@@ -120,7 +124,7 @@ class Drawing {
     let steer = this.p.createVector(0,0);
     let count = 0;
     // check each boid IF there's a boid.
-    if (boids.length > 0) {
+    if (boids && boids.length > 0) {
       // console.log('boids[0].position:', boids[0].position);
       for (let i = 0; i < boids.length; i++) {
         let d = p5.Vector.dist(this.position, boids[i].position);
@@ -223,9 +227,6 @@ class Drawing {
     switch(animationType) {
       case "wiggleAround":
         this.wiggleAround();
-        break;
-      case "flock":
-        this.flock();
         break;
       default:
         console.log('no corresponding animation for: ', this.drawingAnimation);

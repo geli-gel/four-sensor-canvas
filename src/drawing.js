@@ -32,6 +32,11 @@ class Drawing {
     this.y = this.y + this.p.random(-5,5);
   }
 
+  infiniteFall() {
+    this.y = this.y + 2;
+    if (this.y > (this.canvasWidth) + this.r) this.y = 0 - this.r;
+  }
+
   // flocking functions
   run(boids) {
       this.flock(boids);
@@ -228,6 +233,9 @@ class Drawing {
     switch(animationType) {
       case "wiggleAround":
         this.wiggleAround();
+        break;
+      case "infiniteFall":
+        this.infiniteFall();
         break;
       default:
         console.log('no corresponding animation for: ', this.drawingAnimation);

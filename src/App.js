@@ -28,7 +28,7 @@ class App extends Component {
         "LEFT": { 
           1: ["wiggleAround"],
           2: ["flock"],
-          3: ["bonkAround"],
+          3: ["infiniteFall"],
         },
 
         // if only 2 readers, this will be on the app

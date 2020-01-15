@@ -125,11 +125,12 @@ export default function sketch (p) {
   };
   
   p.draw = () => {
-    
+
     p.noFill();
     p.stroke(200,200, 0);
     
-    let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
+    // to-do: figure out how to incorporate time for an animation
+    // let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
     p.background(0,0,80);
 
     // FIRST FIRST remove a things if the flock or drawings list is too big
@@ -152,7 +153,7 @@ export default function sketch (p) {
     p.push();
     if (drawingsArray.length > 0) {
       for (let drawingObject of drawingsArray) { 
-        drawingObject.update(t);
+        drawingObject.update();
         drawingObject.display();
       };
     }

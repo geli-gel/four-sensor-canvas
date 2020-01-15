@@ -2,14 +2,16 @@ import Drawing from './drawing';
 const ml5 = window.ml5;
 const p5 = window.p5;
 
+// modified https://p5js.org/examples/simulate-flocking.html
+
 export default function sketch (p) {
   // variables set by myCustomRedrawAccordingToNewPropsHandler
   let modelName = ""; 
   let drawingAmount = 0;
   let canvasWidth = 0;
   let canvasHeight = 0;
-  let drawingAnimation = "";
-  let drawingSize = 0.1;
+  let drawingAnimation = "flock";
+  let drawingSize = 0;
   let sendMessageToApp;
   
   // ml5 model, stroke, tracking and drawing initializing variables
@@ -17,8 +19,8 @@ export default function sketch (p) {
   let strokePath = null;
   let pen = 'down';
   let x, y;
+  let xStart, yStart;
   let currentDrawingLineData = [];
-
   // array to hold all drawing objects that are created
   let drawingsArray = [];
 
@@ -85,15 +87,26 @@ export default function sketch (p) {
 
     // following along w/ the coding train
     // https://www.youtube.com/watch?v=pdaNttb7Mr8
-    x = p.random(-canvasWidth / 2, canvasWidth / 2);
-    y = p.random(-canvasHeight / 2, canvasHeight / 2);
-    model = ml5.sketchRNN(modelName, modelReady);
+    if (drawingAnimation === 'flock'){
+      x = 0;
+      y = 0;
+      xStart = x;
+      yStart = y;
+
+    } else {
+      x = p.random(-canvasWidth / 2, canvasWidth / 2);
+      y = p.random(-canvasHeight / 2, canvasHeight / 2);
+      xStart = x;
+      yStart = y;
+    }
+
+    currentDrawingLineData.length = 0;
   };
 
   p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
     modelName = props.modelName;
     drawingAmount = props.drawingAmount; 
-    drawingAnimation = props.drawingAnimation;
+    drawingAnimation = String(props.drawingAnimation);
     drawingSize = props.drawingSize;
     canvasWidth = props.canvasWidth;
     canvasHeight = props.canvasHeight;
@@ -105,6 +118,8 @@ export default function sketch (p) {
 
     x = p.random(-canvasWidth / 2, canvasWidth / 2);
     y = p.random(-canvasHeight / 2, canvasHeight / 2);
+    xStart = x;
+    yStart = y;
     model = ml5.sketchRNN(modelName, modelReady);
     currentDrawingLineData.length = 0;
   };
@@ -112,9 +127,23 @@ export default function sketch (p) {
   p.draw = () => {
     
     p.noFill();
+    p.stroke(200,200, 0);
     
     let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
     p.background(0,0,80);
+
+    // FIRST FIRST remove a things if the flock or drawings list is too big
+    let numberOfAllowedDrawings = Number(drawingAmount);
+    // console.log('numberOfAllowedDrawings: ', numberOfAllowedDrawings);
+    // console.log('drawingsArray.length: ', drawingsArray.length);
+    // console.log('flock.boids.length: ', flock.boids.length);
+    if (drawingsArray.length > numberOfAllowedDrawings) {
+      // console.log('array.length was greater thannum of allowed');
+      drawingsArray.splice(0,1);
+    }
+    else if (flock.boids.length > numberOfAllowedDrawings) {
+      flock.boids.splice(0,1);
+    }
 
     // FIRST update the flock
     flock.run();
@@ -122,8 +151,6 @@ export default function sketch (p) {
     // update location of and display any existing drawings in drawingsArray
     p.push();
     if (drawingsArray.length > 0) {
-      // p.background(0,0,80);
-      // console.log(drawingsArray);
       for (let drawingObject of drawingsArray) { 
         drawingObject.update(t);
         drawingObject.display();
@@ -134,8 +161,9 @@ export default function sketch (p) {
     // 
 
     // ALSO display the current bee beeing drawn (since it hasn't been made into an object yet)
-    // IF
     if (strokePath != null) {
+      p.noFill();
+      p.stroke(200,200, 0);
       p.beginShape();
       for (let lineParts of currentDrawingLineData) {
         p.vertex(lineParts[0], lineParts[1]);
@@ -179,21 +207,37 @@ export default function sketch (p) {
         console.log('sketch drawingAnimation === "flock": ', drawingAnimation === "flock");
         let animationType = String(drawingAnimation);
         if (animationType === "flock") {
-          flock.addBoid(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight));
+          flock.addBoid(new Drawing(p, xStart, yStart, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight, drawingSize)); // testing drawing from x,yStart instead of 0 and should be original xystart
         } else { // otherwise just push a new drawing object
           // create and push a new Drawing object from the currentDrawingLineData into the drawingsArray array, and reset currentDrawingLineData to empty
-          drawingsArray.push(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight));
+          drawingsArray.push(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight, drawingSize));
         }
 
-        //move outside and call 'initializeNewDrawing()'?
-        model.reset();
-        model.generate(gotSketch);
-        x = p.random(-canvasWidth / 2, canvasWidth / 2);
-        y = p.random(-canvasHeight / 2, canvasHeight / 2);
-        pen = 'down'; // bug found by youtube commenter
+        //temporary if..i think
+        if (!(flock.boids.length >= numberOfAllowedDrawings) && !(drawingsArray.length >= numberOfAllowedDrawings)) {
 
+          //move outside and call 'initializeNewDrawing()'?
+          model.reset();
+          model.generate(gotSketch);
+
+          if (drawingAnimation === 'flock'){
+            x = 0;
+            y = 0;
+            xStart = x;
+            yStart = y;
+
+          } else {
+            x = p.random(-canvasWidth / 2, canvasWidth / 2);
+            y = p.random(-canvasHeight / 2, canvasHeight / 2);
+            xStart = x;
+            yStart = y;
+          }
+          
+        }
+        pen = 'down'; // bug found by youtube commenter
         currentDrawingLineData.length = 0;
       }
+
 
     };
 

@@ -10,7 +10,7 @@ export default function sketch (p) {
   let drawingAmount = 0;
   let canvasWidth = 0;
   let canvasHeight = 0;
-  let drawingAnimation = "flock";
+  let drawingAnimation = "";
   let drawingSize = 0;
   let sendMessageToApp;
   

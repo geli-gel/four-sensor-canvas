@@ -196,7 +196,7 @@ class Drawing {
   // Cohesion
   // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
   cohesion(boids) {
-    let neighbordist = this.drawingSize * 300;
+    let neighbordist = this.drawingSize * 600;
     let sum = this.p.createVector(0, 0); // Start with empty vector to accumulate all locations
     let count = 0;
     for (let i = 0; i < boids.length; i++) {

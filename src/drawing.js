@@ -2,7 +2,7 @@ import p5 from 'p5';
 
 class Drawing {
 
-  constructor(p, xStart, yStart, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight, drawingSize){
+  constructor(p, xStart, yStart, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight, drawingSize, drawingColor){
     this.p = p
     this.x = xStart
     this.y = yStart
@@ -10,6 +10,7 @@ class Drawing {
     this.lineData = lineData;
     this.drawingAnimation = drawingAnimation;
     this.drawingSize = drawingSize;
+    this.drawingColor = String(drawingColor);
 
     this.canvasWidth = Number(canvasWidth);
     this.canvasHeight = Number(canvasHeight);
@@ -92,24 +93,24 @@ class Drawing {
   render() {
     // Draw a triangle rotated in the direction of velocity
 
-    // let theta = this.velocity.heading() + this.p.radians(90);
-    // this.p.stroke(200);
-    // this.p.push();
-    // this.p.translate(this.position.x, this.position.y);
-    // this.p.rotate(theta);
-    // this.p.beginShape();
-    // this.p.vertex(0, -this.r / 2);
-    // this.p.vertex(-this.r, this.r / 2);
-    // this.p.vertex(this.r, this.r / 2);
-    // this.p.endShape(this.p.CLOSE);
-    // this.p.pop();
+    let theta = this.velocity.heading() + this.p.radians(90);
+    this.p.stroke(200);
+    this.p.push();
+    this.p.translate(this.position.x, this.position.y);
+    this.p.rotate(theta);
+    this.p.beginShape();
+    this.p.vertex(0, -this.r / 2);
+    this.p.vertex(-this.r, this.r / 2);
+    this.p.vertex(this.r, this.r / 2);
+    this.p.endShape(this.p.CLOSE);
+    this.p.pop();
 
     
     // Draw the ml5 drawing after translating to current position
 
     this.p.push();
     this.p.translate(this.position.x, this.position.y);
-    this.p.stroke(200,200, 0);
+    this.p.stroke(this.drawingColor);
     // to-do: make it so that stroke weight depends on drawing size
     this.p.strokeWeight(4);
     this.p.beginShape(this.p.LINES);
@@ -215,7 +216,7 @@ class Drawing {
   }  
 
   display() {
-    this.p.stroke(200,200, 0);
+    this.p.stroke(this.drawingColor);
     this.p.strokeWeight(4);
     this.p.beginShape(this.p.LINES);
     for (let lineParts of this.lineData) {

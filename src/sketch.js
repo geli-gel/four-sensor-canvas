@@ -8,6 +8,7 @@ export default function sketch (p) {
   // variables set by myCustomRedrawAccordingToNewPropsHandler
   let modelName = ""; 
   let drawingAmount = 0;
+  let drawingColor = "";
   let canvasWidth = 0;
   let canvasHeight = 0;
   let drawingAnimation = "";
@@ -105,7 +106,50 @@ export default function sketch (p) {
 
   p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
     modelName = props.modelName;
-    drawingAmount = props.drawingAmount; 
+    switch (props.drawingAmount) {
+      case "few":
+        drawingAmount = 7;
+        break;
+      case "some":
+        drawingAmount = 11;
+        break;
+      case "many":
+        drawingAmount = 16;
+        break;
+      case "tooMany":
+        drawingAmount = 21;
+        break;
+      default:
+        console.log('invalid drawing amount: ', props.drawingAmount);
+    }
+
+    // 1: "red", // it would be cool if when you change the token, new ones pop up in that color and slowly replace the old color (so drawings have lifetimes)
+    // 2: "orange",
+    // 3: "yellow",
+    // 4: "green",
+    // 5: "blue",
+    // 6: "purple",
+    // 7: "cyan",
+    // 8: "magenta",
+    // 9: "black",
+    // 10: "rainbow", 
+    // switch(props.drawingColor) {
+    //   case "few":
+    //     drawingColor = 7;
+    //     break;
+    //   case "some":
+    //     drawingColor = 11;
+    //     break;
+    //   case "many":
+    //     drawingColor = 16;
+    //     break;
+    //   case "tooMany":
+    //     drawingColor = 21;
+    //     break;
+    //   default:
+    //     console.log('invalid drawing amount: ', props.drawingColor);
+    // }
+    drawingColor = String(props.drawingColor);
     drawingAnimation = String(props.drawingAnimation);
     drawingSize = props.drawingSize;
     canvasWidth = props.canvasWidth;
@@ -116,10 +160,19 @@ export default function sketch (p) {
     // drawingAmount={sketchDetails.drawingAmount}
     // drawingColor={sketchDetails.drawingColor}
 
-    x = p.random(-canvasWidth / 2, canvasWidth / 2);
-    y = p.random(-canvasHeight / 2, canvasHeight / 2);
-    xStart = x;
-    yStart = y;
+    if (drawingAnimation === 'flock'){
+      x = 0;
+      y = 0;
+      xStart = x;
+      yStart = y;
+
+    } else {
+      x = p.random(-canvasWidth / 2, canvasWidth / 2);
+      y = p.random(-canvasHeight / 2, canvasHeight / 2);
+      xStart = x;
+      yStart = y;
+    }
+    
     model = ml5.sketchRNN(modelName, modelReady);
     currentDrawingLineData.length = 0;
   };
@@ -127,7 +180,7 @@ export default function sketch (p) {
   p.draw = () => {
 
     p.noFill();
-    p.stroke(200,200, 0);
+    p.stroke(drawingColor);
     
     // to-do: figure out how to incorporate time for an animation
     // let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
@@ -164,7 +217,7 @@ export default function sketch (p) {
     // ALSO display the current bee beeing drawn (since it hasn't been made into an object yet)
     if (strokePath != null) {
       p.noFill();
-      p.stroke(200,200, 0);
+      p.stroke(drawingColor);
       p.beginShape();
       for (let lineParts of currentDrawingLineData) {
         p.vertex(lineParts[0], lineParts[1]);
@@ -180,7 +233,7 @@ export default function sketch (p) {
       let newY = y + strokePath.dy * drawingSize;
       if (pen === 'down') {
           // draw immediately
-          p.stroke(200,200, 0);
+          p.stroke(drawingColor);
           p.strokeWeight(4);
           p.line(x, y, newX, newY);
 
@@ -208,10 +261,10 @@ export default function sketch (p) {
         console.log('sketch drawingAnimation === "flock": ', drawingAnimation === "flock");
         let animationType = String(drawingAnimation);
         if (animationType === "flock") {
-          flock.addBoid(new Drawing(p, xStart, yStart, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight, drawingSize)); // testing drawing from x,yStart instead of 0 and should be original xystart
+          flock.addBoid(new Drawing(p, xStart, yStart, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight, drawingSize, drawingColor)); // testing drawing from x,yStart instead of 0 and should be original xystart
         } else { // otherwise just push a new drawing object
           // create and push a new Drawing object from the currentDrawingLineData into the drawingsArray array, and reset currentDrawingLineData to empty
-          drawingsArray.push(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight, drawingSize));
+          drawingsArray.push(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight, drawingSize, drawingColor));
         }
 
         //temporary if..i think

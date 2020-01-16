@@ -33,10 +33,10 @@ class App extends Component {
 
         // if only 2 readers, this will be on the app
         "RIGHT": { // and a cycle of removing when new ones are added once at max
-          1: ["few"],     // 5
-          2: ["some"],    // 11
-          3: ["many"],    // 16
-          4: ["tooMany"], // 20 
+          1: "few",     // 7
+          2: "some",    // 11
+          3: "many",    // 16
+          4: "tooMany", // 21 
         },
 
         // if only 2 readers, this will be on the app
@@ -65,6 +65,11 @@ class App extends Component {
   }
 
   updateSketchDetails = (messageWord, messageNumber) => {
+    console.log('in App')
+    console.log('messageWord: ', messageWord)
+    console.log('messageNumber: ', messageNumber)
+    console.log('typeof messageWord: ', typeof messageWord)
+    console.log('typeof messageNumber: ', typeof messageNumber)
     let updatedSketchDetails = this.state.sketchDetails;
     updatedSketchDetails[messageWord] = this.state.TokenDescriptions[messageWord][messageNumber];
     // to-do: again, sketchdetails is the same as reader labels...need to get rid of it i think
@@ -130,6 +135,8 @@ class App extends Component {
           <div className="readers-wrapper">
             <SettingsZone
               readerLabels={this.state.readerLabels}
+              readerOptions={this.state.TokenDescriptions}
+              onSettingChange={this.updateSketchDetails}
             />
           </div>
         </div>

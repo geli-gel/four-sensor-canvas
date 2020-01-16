@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import Reader from './Reader';
 import './SettingsZone.css'
 
-const SettingsZone = ({readerLabels}) => {
-  // to-do: make the readers take in props of reader info (position, label)
+const SettingsZone = ({readerLabels, readerOptions, onSettingChange}) => {
   
   const readers = Object.keys(readerLabels).map(function(readerPosition, index) {
     return (
@@ -11,8 +10,8 @@ const SettingsZone = ({readerLabels}) => {
         key={index}
         position={readerPosition}
         label={readerLabels[readerPosition]}
-        // to-do: add settings prop
-        // onButtonClick={ () => onReaderButtonClick(reader)}
+        dropDownOptions={readerOptions[readerPosition]}
+        onDropDownSelection={(selection) => onSettingChange(readerPosition, selection)}
       />
     )
   });

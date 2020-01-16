@@ -93,17 +93,17 @@ class Drawing {
   render() {
     // Draw a triangle rotated in the direction of velocity
 
-    let theta = this.velocity.heading() + this.p.radians(90);
-    this.p.stroke(200);
-    this.p.push();
-    this.p.translate(this.position.x, this.position.y);
-    this.p.rotate(theta);
-    this.p.beginShape();
-    this.p.vertex(0, -this.r / 2);
-    this.p.vertex(-this.r, this.r / 2);
-    this.p.vertex(this.r, this.r / 2);
-    this.p.endShape(this.p.CLOSE);
-    this.p.pop();
+    // let theta = this.velocity.heading() + this.p.radians(90);
+    // this.p.stroke(200);
+    // this.p.push();
+    // this.p.translate(this.position.x, this.position.y);
+    // this.p.rotate(theta);
+    // this.p.beginShape();
+    // this.p.vertex(0, -this.r / 2);
+    // this.p.vertex(-this.r, this.r / 2);
+    // this.p.vertex(this.r, this.r / 2);
+    // this.p.endShape(this.p.CLOSE);
+    // this.p.pop();
 
     
     // Draw the ml5 drawing after translating to current position

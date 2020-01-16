@@ -22,7 +22,7 @@ class Drawing {
     this.velocity = p5.Vector.random2D();
     this.position = this.p.createVector(this.x, this.y); // I have this.x, this.y start points. hmm. 
     this.r = drawingSize * 300; // need to set to drawingSize * 100? (.1 would become 10) // or use 30
-    this.maxspeed = 2.5;
+    this.maxspeed = 4.5;
     this.maxforce = 0.04;
   }
 
@@ -122,17 +122,16 @@ class Drawing {
     this.p.pop();
   }
 
-  // wraparound // THIS WAS MESSED UP AND DOING QUADRANTS
   borders() {
-    if (this.position.x < (-this.canvasWidth / 2) -this.r)  this.position.x = (this.canvasWidth / 2 ) + this.r;
-    if (this.position.y < (-this.canvasHeight / 2) -this.r)  this.position.y = (this.canvasHeight / 2) + this.r;
-    if (this.position.x > (this.canvasWidth / 2) + this.r) this.position.x = (-this.canvasWidth / 2) -this.r;
-    if (this.position.y > (this.canvasHeight / 2) + this.r) this.position.y = -(this.canvasHeight / 2) + this.r;
+    if (this.position.x < (-this.canvasWidth / 2) -this.r)  this.position.x = (this.canvasWidth / 2 );
+    if (this.position.y < (-this.canvasHeight / 2) -this.r)  this.position.y = (this.canvasHeight / 2);
+    if (this.position.x > (this.canvasWidth / 2) + this.r) this.position.x = (-this.canvasWidth / 2);
+    if (this.position.y > (this.canvasHeight / 2) + this.r) this.position.y = -(this.canvasHeight / 2) ;
   }
 
   // Separation (steer away from nearby boids)
   separate(boids) {
-    let desiredSeparation = this.drawingSize * 300;
+    let desiredSeparation = this.drawingSize * 400;
     let steer = this.p.createVector(0,0);
     let count = 0;
     // check each boid IF there's a boid.

@@ -8,12 +8,14 @@ export default function sketch (p) {
   // variables set by myCustomRedrawAccordingToNewPropsHandler
   let modelName = ""; 
   let drawingAmount = 0;
-  let drawingColor = "";
   let canvasWidth = 0;
   let canvasHeight = 0;
   let drawingAnimation = "";
   let drawingSize = 0;
   let sendMessageToApp;
+  let drawingColor = "";
+  let rainbowOn = false;
+  const rainbowColors = ['red','orange','yellow','green','blue','purple','cyan','magenta'];
   
   // ml5 model, stroke, tracking and drawing initializing variables
   let model;
@@ -44,6 +46,10 @@ export default function sketch (p) {
     model.reset();
     strokePath = null;
     model.generate(gotSketch); // model.generate returns an object containing stroke path and pen status which is passed into gotSketch
+    // set drawingColor to random if it's currently set to Rainbow
+    if (rainbowOn) {
+      drawingColor = String(rainbowColors[Math.floor(Math.random()*rainbowColors.length)]);
+    } 
   };
 
   // function called in p.draw when generating new ml5 model stroke path
@@ -118,7 +124,14 @@ export default function sketch (p) {
       yStart = y;
     }
 
+    // clear lineData array
     currentDrawingLineData.length = 0;
+
+    // set drawingColor to random if it's currently set to Rainbow
+    if (drawingColor === "rainbow") {
+      rainbowOn = true;
+      drawingColor = String(rainbowColors[Math.floor(Math.random()*rainbowColors.length)]);
+    } 
   };
 
   p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
@@ -139,7 +152,13 @@ export default function sketch (p) {
       default:
         console.log('invalid drawing amount: ', props.drawingAmount);
     }
+
     drawingColor = String(props.drawingColor);
+    if (drawingColor === "rainbow") {
+      rainbowOn = true;
+    } else {
+      rainbowOn = false;
+    }
     drawingAnimation = String(props.drawingAnimation);
     canvasWidth = props.canvasWidth;
     canvasHeight = props.canvasHeight;
@@ -234,8 +253,11 @@ export default function sketch (p) {
         // add the final line data to array
         currentDrawingLineData.push([x,y]);
         currentDrawingLineData.push([newX,newY]);
-
+        
         const lineData = [...currentDrawingLineData]; // copy array
+        
+        // set drawingSize according to slider
+        drawingSize = drawingSizeSlider.value();
         
         // add to flock as a boid if drawingAnimation is flock
         let animationType = String(drawingAnimation);
@@ -248,6 +270,11 @@ export default function sketch (p) {
 
         // reset the model and generate sketch line if there is room for another drawing
         if (!((flock.boids.length + drawingsArray.length) >= numberOfAllowedDrawings)) {
+
+          // set drawingColor to random if it's currently set to Rainbow
+          if (rainbowOn) {
+            drawingColor = String(rainbowColors[Math.floor(Math.random()*rainbowColors.length)]);
+          } 
 
           //to-do: move outside and call 'initializeNewDrawing()'?
           model.reset();
@@ -269,9 +296,7 @@ export default function sketch (p) {
         }
         pen = 'down'; // bug found by youtube commenter
         currentDrawingLineData.length = 0;
-
-        // set drawingSize according to slider
-        drawingSize = drawingSizeSlider.value();
+        
       }
 
 

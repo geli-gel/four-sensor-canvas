@@ -28,6 +28,7 @@ class App extends Component {
           1: "wiggleAround",
           2: "flock",
           3: "infiniteFall",
+          4: "noMovement",
         },
 
         // if only 2 readers, this will be on the app

@@ -41,7 +41,7 @@
 
 // List of Tags UIDs // AZ: that are allowed for each reader
 // TO-DO: ? change these into byte sized hex versions? possible? would have to rewrite cards??? idk!
-String tagarray[][10] = {
+String tagarray[][11] = {
   // TO-DO: make the uidString variable have spaces in it, ie: read it in the same way dumpinfo works
 //  {"05 90 DB 22", "15 4A 4A 22", "15 B9 D2 22", "15 C3 FF 22", "15 C9 46 22", "44 2B 9D 23"},
 //  {"44 49 87 23", "44 72 18 23", "44 7C 7E 23"}, 
@@ -49,10 +49,10 @@ String tagarray[][10] = {
 //  {"44 CF A9 23", "44 D5 DD 23", "54 04 DD 23", "54 1D B4 23", "54 26 D9 23", "76 EB 41 23", "86 88 A5 23", "B2 12 F1 2D", "B2 D6 76 2D", "F5 D1 07 21" },
 
 // no spaces in between to match uidString
-  {"590DB22", "154A4A22", "15B9D222", "15C3FF22", "15C94622", "442B9D23"}, // to-do: find out why leading 0 not going into uidString (for *0*590DB22)
-  {"44498723", "44721823", "447C7E23"}, 
-  {"44834F23", "449AB623", "44B00B23", "44B96623"},
-  {"44CFA923", "44D5DD23", "5404DD23", "541DB423", "5426D923", "76EB4123", "8688A523", "B212F12D", "B2D6762D", "F5D10721" },
+  {"590DB22", "154A4A22", "15B9D222", "15C3FF22", "15C94622", "442B9D23"}, // "TOP"// to-do: find out why leading 0 not going into uidString (for *0*590DB22)
+  {"44498723", "44721823", "447C7E23", "F7839D5F"},                        // "LEFT"
+  {"44834F23", "449AB623", "44B00B23", "44B96623"},                        // "RIGHT"
+  {"44CFA923", "44D5DD23", "5404DD23", "541DB423", "5426D923", "76EB4123", "8688A523", "B212F12D", "B2D6762D", "F5D10721", "F5EB9421" }, // "BOTTOM"
 };
 
 // AZ: Serial Message Parts : 
@@ -135,8 +135,8 @@ void loop() {
       // Show some details of the PICC (that is: the tag/card)
 //      Serial.print(F(": Card UID:"));
       dump_byte_array(mfrc522[reader].uid.uidByte, mfrc522[reader].uid.size); // AZ: this saves the read card's UID as a string into uidString
-      // Serial.println();
-      // Serial.println(uidString);
+//      Serial.println();
+//      Serial.println(uidString);
 
 // Look at each UID in the chosen reader's array
       for (int i = 0; i < (sizeof(tagarray[reader]) / sizeof(tagarray[reader][0]) ); i++)        //tagarray's columns
@@ -191,8 +191,8 @@ void loop() {
 */
 void dump_byte_array(byte * buffer, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
-    // Serial.print(buffer[i] < 0x10 ? " 0" : " ");
-    // Serial.print(buffer[i], HEX);
+//    Serial.print(buffer[i] < 0x10 ? " 0" : " ");
+//    Serial.print(buffer[i], HEX);
 //    https://arduino.stackexchange.com/questions/53258/how-to-store-an-rfid-tag-number-in-a-string
     String uid_part = String(buffer[i], HEX);
     uid_part.toUpperCase();

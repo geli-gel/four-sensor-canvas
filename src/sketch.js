@@ -139,42 +139,11 @@ export default function sketch (p) {
       default:
         console.log('invalid drawing amount: ', props.drawingAmount);
     }
-
-    // 1: "red", // it would be cool if when you change the token, new ones pop up in that color and slowly replace the old color (so drawings have lifetimes)
-    // 2: "orange",
-    // 3: "yellow",
-    // 4: "green",
-    // 5: "blue",
-    // 6: "purple",
-    // 7: "cyan",
-    // 8: "magenta",
-    // 9: "black",
-    // 10: "rainbow", 
-    // switch(props.drawingColor) {
-    //   case "few":
-    //     drawingColor = 7;
-    //     break;
-    //   case "some":
-    //     drawingColor = 11;
-    //     break;
-    //   case "many":
-    //     drawingColor = 16;
-    //     break;
-    //   case "tooMany":
-    //     drawingColor = 21;
-    //     break;
-    //   default:
-    //     console.log('invalid drawing amount: ', props.drawingColor);
-    // }
     drawingColor = String(props.drawingColor);
     drawingAnimation = String(props.drawingAnimation);
     canvasWidth = props.canvasWidth;
     canvasHeight = props.canvasHeight;
     sendMessageToApp = props.sendMessageToApp; 
-
-    // leftover props passed into the p5wrapper:
-    // drawingAmount={sketchDetails.drawingAmount}
-    // drawingColor={sketchDetails.drawingColor}
 
     if (drawingAnimation === 'flock'){
       x = 0;
@@ -198,18 +167,13 @@ export default function sketch (p) {
     p.noFill();
     p.stroke(drawingColor);
     
-    console.log(canvasRed.value(), canvasGreen.value(), canvasBlue.value());
     // to-do: figure out how to incorporate time for an animation
     // let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
 
 
     // FIRST FIRST remove a things if the flock or drawings list is too big
     let numberOfAllowedDrawings = Number(drawingAmount);
-    // console.log('numberOfAllowedDrawings: ', numberOfAllowedDrawings);
-    // console.log('drawingsArray.length: ', drawingsArray.length);
-    // console.log('flock.boids.length: ', flock.boids.length);
     if (drawingsArray.length > numberOfAllowedDrawings) {
-      // console.log('array.length was greater thannum of allowed');
       drawingsArray.splice(0,1);
     }
     else if (flock.boids.length > numberOfAllowedDrawings) {
@@ -245,7 +209,7 @@ export default function sketch (p) {
 
     // for the coding train one
     // p.translate(canvasWidth / 2, canvasHeight / 2);// he said he'd explain this line but never did! all it is doing is making my drawingsArray happen off canvas so I'm commenting it out.
-    if (strokePath != null) { // he's saying he could control how the draw loop works with the query to the model in a different way, but this is an easy way to do it - draw's just going to loop (what other way is he talking about???)
+    if (strokePath != null) {
       let newX = x + strokePath.dx * drawingSize;
       let newY = y + strokePath.dy * drawingSize;
       if (pen === 'down') {
@@ -257,8 +221,6 @@ export default function sketch (p) {
           // add the line data to array
           currentDrawingLineData.push([x,y]);
           currentDrawingLineData.push([newX,newY]);
-          // console.log(currentDrawingLineData);
-
         }
       // move x and y to new spot, reset strokePath, set pen for next stroke
       x = newX;
@@ -269,13 +231,13 @@ export default function sketch (p) {
       if (pen !== 'end') {
         model.generate(gotSketch); // request the next strokePath
       } else {
-        console.log('drawing complete');
+        // add the final line data to array
+        currentDrawingLineData.push([x,y]);
+        currentDrawingLineData.push([newX,newY]);
 
         const lineData = [...currentDrawingLineData]; // copy array
         
         // add to flock as a boid if drawingAnimation is flock
-        console.log('sketch drawingAnimation: ', drawingAnimation);
-        console.log('sketch drawingAnimation === "flock": ', drawingAnimation === "flock");
         let animationType = String(drawingAnimation);
         if (animationType === "flock") {
           flock.addBoid(new Drawing(p, xStart, yStart, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight, drawingSize, drawingColor)); // testing drawing from x,yStart instead of 0 and should be original xystart
@@ -284,10 +246,10 @@ export default function sketch (p) {
           drawingsArray.push(new Drawing(p, 0, 0, modelName, lineData, drawingAnimation, canvasWidth, canvasHeight, drawingSize, drawingColor));
         }
 
-        //temporary if..i think
-        if (!(flock.boids.length >= numberOfAllowedDrawings) && !(drawingsArray.length >= numberOfAllowedDrawings)) {
+        // reset the model and generate sketch line if there is room for another drawing
+        if (!((flock.boids.length + drawingsArray.length) >= numberOfAllowedDrawings)) {
 
-          //move outside and call 'initializeNewDrawing()'?
+          //to-do: move outside and call 'initializeNewDrawing()'?
           model.reset();
           model.generate(gotSketch);
 

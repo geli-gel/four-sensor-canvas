@@ -28,7 +28,6 @@ class Drawing {
 
 
   wiggleAround() {
-    console.log('wiggling');
     this.x = this.x + this.p.random(-5,5);
     this.y = this.y + this.p.random(-5,5);
   }
@@ -172,7 +171,6 @@ class Drawing {
     let sum = this.p.createVector(0, 0);
     let count = 0;
     for (let i = 0; i < boids.length; i++) {
-      // let d = this.p.Vector.dist(this.position, boids[i].position);
       let d = p5.Vector.dist(this.position, boids[i].position);
       // if ((d > 0) && (d < neighborDist)) {
       if ((boids[i] !== this) && (d < neighborDist)) {
@@ -199,7 +197,6 @@ class Drawing {
     let sum = this.p.createVector(0, 0); // Start with empty vector to accumulate all locations
     let count = 0;
     for (let i = 0; i < boids.length; i++) {
-      // let d = this.p.Vector.dist(this.position, boids[i].position);
       let d = this.position.dist(boids[i].position);
       if ((d > 0) && (d < neighbordist)) {
         sum.add(boids[i].position); // Add location
@@ -219,7 +216,6 @@ class Drawing {
     this.p.strokeWeight(4);
     this.p.beginShape(this.p.LINES);
     for (let lineParts of this.lineData) {
-      // this.p.line(lineParts[0] + this.x, lineParts[1] + this.y , lineParts[2] + this.x, lineParts[3] + this.y);
       this.p.vertex(lineParts[0] + this.x, lineParts[1] + this.y);
     }
     this.p.endShape();
@@ -228,8 +224,6 @@ class Drawing {
   update = (time) => { 
 
     const animationType = String(this.drawingAnimation);
-    console.log('drawing update, this.drawingAnimation: ', this.drawingAnimation);
-    console.log('drawing update, animationType: ', animationType);
     switch(animationType) {
       case "wiggleAround":
         this.wiggleAround();

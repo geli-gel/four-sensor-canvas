@@ -28,6 +28,12 @@ export default function sketch (p) {
   // object to hold all flocking boids
   let flock;
 
+  // object to represent slider
+  let drawingSizeSlider;
+  let canvasRed;
+  let canvasGreen;
+  let canvasBlue;
+
   // p5.serialport variables
   let serial;
   const portName = '/dev/tty.usbmodem14201'; // hard-coded to my computer's port recieving data from Arduino
@@ -51,11 +57,18 @@ export default function sketch (p) {
 
   p.setup = () => {
     p.createCanvas(canvasWidth, canvasHeight, p.WEBGL);
-    p.background(0,0,80);
-
+    
     // setup for flocking animation
     flock = new Flock();
-
+    
+    // slider variables for new drawing size, canvas color
+    drawingSizeSlider = p.createSlider(.05,.7, .1, .05);
+    canvasRed = p.createSlider(0,255,0,10);
+    canvasGreen = p.createSlider(0,255,0,10);
+    canvasBlue = p.createSlider(0,255,80,10);
+    
+    p.background(canvasRed.value(), canvasGreen.value(), canvasBlue.value());
+    
     console.log('in sketch setup, modelName: ', modelName)
 
     // serialport basics from https://itp.nyu.edu/physcomp/labs/labs-serial-communication/lab-serial-input-to-the-p5-js-ide/
@@ -151,7 +164,7 @@ export default function sketch (p) {
     // }
     drawingColor = String(props.drawingColor);
     drawingAnimation = String(props.drawingAnimation);
-    drawingSize = props.drawingSize;
+    // drawingSize = props.drawingSize;
     canvasWidth = props.canvasWidth;
     canvasHeight = props.canvasHeight;
     sendMessageToApp = props.sendMessageToApp; 
@@ -172,19 +185,19 @@ export default function sketch (p) {
       xStart = x;
       yStart = y;
     }
-    
+
     model = ml5.sketchRNN(modelName, modelReady);
     currentDrawingLineData.length = 0;
   };
   
   p.draw = () => {
-
+    p.background(canvasRed.value(), canvasGreen.value(), canvasBlue.value());
     p.noFill();
     p.stroke(drawingColor);
     
     // to-do: figure out how to incorporate time for an animation
     // let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
-    p.background(0,0,80);
+
 
     // FIRST FIRST remove a things if the flock or drawings list is too big
     let numberOfAllowedDrawings = Number(drawingAmount);
@@ -253,6 +266,9 @@ export default function sketch (p) {
         model.generate(gotSketch); // request the next strokePath
       } else {
         console.log('drawing complete');
+
+        // set drawingSize according to slider
+        drawingSize = drawingSizeSlider.value();
 
         const lineData = [...currentDrawingLineData]; // copy array
         

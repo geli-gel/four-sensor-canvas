@@ -63,9 +63,13 @@ export default function sketch (p) {
     
     // slider variables for new drawing size, canvas color
     drawingSizeSlider = p.createSlider(.05,.7, .1, .05);
-    canvasRed = p.createSlider(0,255,0,10);
-    canvasGreen = p.createSlider(0,255,0,10);
-    canvasBlue = p.createSlider(0,255,80,10);
+    drawingSizeSlider.class('size')
+    canvasRed = p.createSlider(0,255,60,10);
+    canvasRed.class('slider red');
+    canvasGreen = p.createSlider(0,255,160,10);
+    canvasGreen.class('slider green');
+    canvasBlue = p.createSlider(0,255,170,10);
+    canvasBlue.class('slider blue');
     
     p.background(canvasRed.value(), canvasGreen.value(), canvasBlue.value());
     
@@ -164,7 +168,6 @@ export default function sketch (p) {
     // }
     drawingColor = String(props.drawingColor);
     drawingAnimation = String(props.drawingAnimation);
-    // drawingSize = props.drawingSize;
     canvasWidth = props.canvasWidth;
     canvasHeight = props.canvasHeight;
     sendMessageToApp = props.sendMessageToApp; 
@@ -195,6 +198,7 @@ export default function sketch (p) {
     p.noFill();
     p.stroke(drawingColor);
     
+    console.log(canvasRed.value(), canvasGreen.value(), canvasBlue.value());
     // to-do: figure out how to incorporate time for an animation
     // let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
 
@@ -267,9 +271,6 @@ export default function sketch (p) {
       } else {
         console.log('drawing complete');
 
-        // set drawingSize according to slider
-        drawingSize = drawingSizeSlider.value();
-
         const lineData = [...currentDrawingLineData]; // copy array
         
         // add to flock as a boid if drawingAnimation is flock
@@ -306,6 +307,9 @@ export default function sketch (p) {
         }
         pen = 'down'; // bug found by youtube commenter
         currentDrawingLineData.length = 0;
+
+        // set drawingSize according to slider
+        drawingSize = drawingSizeSlider.value();
       }
 
 

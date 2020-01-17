@@ -5,9 +5,53 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: lavender;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* using CSS from https://www.w3schools.com/howto/howto_js_rangeslider.asp */
+
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  height: 18px; /* Specified height */
+  outline: none; /* Remove outline */
+  opacity: .6; /* Set transparency (for mouse-over effects on hover) */
+}
+
+.size {
+  margin-right: 35px;
+}
+
+.red {
+  background: red;
+}
+
+.green {
+  background: green;
+}
+
+.blue {
+  background: blue;
+}
+
+
+.slider:hover, .slider-green:hover, .slider-blue:hover {
+  opacity: .7; /* Fully shown on mouse-over */
+}
+
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 18px; /* Set a specific slider handle width */
+  height: 18px; /* Slider handle height */
+  background: lightgray; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  opacity: .5;
 }

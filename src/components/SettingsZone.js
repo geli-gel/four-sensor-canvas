@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Reader from './Reader';
 import './SettingsZone.css'
 

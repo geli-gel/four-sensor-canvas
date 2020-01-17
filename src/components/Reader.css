@@ -6,7 +6,7 @@
   flex-direction: column;
   justify-content: center; */
 
-  background-color: antiquewhite;
+  background-color: ghostwhite;
 
 
   position: absolute;
@@ -29,23 +29,19 @@
 .TOP {
   left: 0;
   top: 0;
-  /* background: red; */
 }
 
 .LEFT {
   left: 0;
   bottom: 0;
-  /* background: green; */
 }
 
 .RIGHT {
   right: 0;
   top: 0;
-  /* background: yellow; */
 }
 
 .BOTTOM {
   right: 0;
   bottom: 0;
-  /* background: blue; */
 }

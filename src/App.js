@@ -8,9 +8,9 @@ class App extends Component {
     super(props)
     this.state = {
       sketchDetails: {
-        "TOP": "bee",              // drawingModel (from reader)
-        "LEFT": "flock",    // drawingAnimation (from reader)
-        "RIGHT": "few",                // drawingAmount (from button)
+        "TOP": "",              // drawingModel (from reader)
+        "LEFT": "",    // drawingAnimation (from reader)
+        "RIGHT": "few",                // drawingAmount (from button) // works better w/ a default :)
         "BOTTOM": "",              // drawingColor (from button)
       },
 
@@ -25,9 +25,9 @@ class App extends Component {
         },
 
         "LEFT": { 
-          1: ["wiggleAround"],
-          2: ["flock"],
-          3: ["infiniteFall"],
+          1: "wiggleAround",
+          2: "flock",
+          3: "infiniteFall",
         },
 
         // if only 2 readers, this will be on the app

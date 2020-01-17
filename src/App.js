@@ -8,10 +8,10 @@ class App extends Component {
     super(props)
     this.state = {
       sketchDetails: {
-        "TOP": "",              // drawingModel (from reader)
-        "LEFT": "",    // drawingAnimation (from reader)
+        "TOP": "bee",              // drawingModel (from reader)
+        "LEFT": "flock",    // drawingAnimation (from reader)
         "RIGHT": "few",                // drawingAmount (from button) // works better w/ a default :)
-        "BOTTOM": "",              // drawingColor (from button)
+        "BOTTOM": "rainbow",              // drawingColor (from button)
       },
 
       TokenDescriptions: {
@@ -65,11 +65,11 @@ class App extends Component {
   }
 
   updateSketchDetails = (messageWord, messageNumber) => {
-    console.log('in App')
-    console.log('messageWord: ', messageWord)
-    console.log('messageNumber: ', messageNumber)
-    console.log('typeof messageWord: ', typeof messageWord)
-    console.log('typeof messageNumber: ', typeof messageNumber)
+    // console.log('in App')
+    // console.log('messageWord: ', messageWord)
+    // console.log('messageNumber: ', messageNumber)
+    // console.log('typeof messageWord: ', typeof messageWord)
+    // console.log('typeof messageNumber: ', typeof messageNumber)
     let updatedSketchDetails = this.state.sketchDetails;
     updatedSketchDetails[messageWord] = this.state.TokenDescriptions[messageWord][messageNumber];
     // to-do: again, sketchdetails is the same as reader labels...need to get rid of it i think

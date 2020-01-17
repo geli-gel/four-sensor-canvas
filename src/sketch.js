@@ -234,6 +234,7 @@ export default function sketch (p) {
       if (pen === 'down') {
           // draw immediately
           p.stroke(drawingColor);
+          // to-do: make it so that stroke weight depends on drawing size
           p.strokeWeight(4);
           p.line(x, y, newX, newY);
 

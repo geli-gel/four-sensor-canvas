@@ -111,7 +111,7 @@ class Drawing {
     this.p.translate(this.position.x, this.position.y);
     this.p.stroke(this.drawingColor);
     // to-do: make it so that stroke weight depends on drawing size
-    this.p.strokeWeight(4);
+    // this.p.strokeWeight(4);
     this.p.beginShape(this.p.LINES);
     for (let lineParts of this.lineData) { 
       // to-do: make it so flock drawings can be drawn in random places and will line up with position of 

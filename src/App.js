@@ -8,11 +8,10 @@ class App extends Component {
     super(props)
     this.state = {
       sketchDetails: {
-        "TOP": "",              // drawingModel (from reader)
-        "LEFT": "",    // drawingAnimation (from reader)
-        "RIGHT": 4,                // drawingAmount (from button)
+        "TOP": "bee",              // drawingModel (from reader)
+        "LEFT": "flock",    // drawingAnimation (from reader)
+        "RIGHT": "few",                // drawingAmount (from button)
         "BOTTOM": "",              // drawingColor (from button)
-        drawingSize: 0.1,          // drawingSize (from a button?)
       },
 
       TokenDescriptions: {
@@ -51,6 +50,7 @@ class App extends Component {
           8: "magenta",
           9: "black",
           10: "rainbow", // either each drawing is a random color, or better, each stroke of each drawing is a random color
+          11: "white" // to-do: need to add an 11th option to the arduino code
         },
       },
       

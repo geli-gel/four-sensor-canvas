@@ -8,10 +8,10 @@ class App extends Component {
     super(props)
     this.state = {
       sketchDetails: {
-        "TOP": "bee",              // drawingModel (from reader)
-        "LEFT": "flock",    // drawingAnimation (from reader)
+        "TOP": "",              // drawingModel (from reader)
+        "LEFT": "",    // drawingAnimation (from reader)
         "RIGHT": "few",                // drawingAmount (from button) // works better w/ a default :)
-        "BOTTOM": "rainbow",              // drawingColor (from button)
+        "BOTTOM": "",              // drawingColor (from button)
       },
 
       TokenDescriptions: {

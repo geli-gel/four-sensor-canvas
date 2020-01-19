@@ -41,17 +41,18 @@ class App extends Component {
 
         // if only 2 readers, this will be on the app
         "BOTTOM": { 
-          1: "red", // it would be cool if when you change the token, new ones pop up in that color and slowly replace the old color (so drawings have lifetimes)
+          1: "crimson", // it would be cool if when you change the token, new ones pop up in that color and slowly replace the old color (so drawings have lifetimes)
           2: "orange",
-          3: "yellow",
-          4: "green",
-          5: "blue",
-          6: "purple",
+          3: "gold",
+          4: "lawngreen",
+          5: "mediumblue",
+          6: "darkviolet",
           7: "cyan",
           8: "magenta",
           9: "black",
           10: "rainbow", // either each drawing is a random color, or better, each stroke of each drawing is a random color
-          11: "white" // to-do: need to add an 11th option to the arduino code
+          11: "white", 
+          12: "aquamarine", // to-do: need to add a 12th option to the arduino code
         },
       },
       

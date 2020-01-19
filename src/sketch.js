@@ -15,7 +15,7 @@ export default function sketch (p) {
   let sendMessageToApp;
   let drawingColor = "";
   let rainbowOn = false;
-  const rainbowColors = ['red','orange','yellow','green','blue','purple','cyan','magenta'];
+  const rainbowColors = ['crimson','orange','gold','lawngreen','mediumblue','darkviolet','cyan','magenta','aquamarine'];
   
   // ml5 model, stroke, tracking and drawing initializing variables
   let model;

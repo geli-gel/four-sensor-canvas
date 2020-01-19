@@ -29,19 +29,36 @@
 .TOP {
   left: 0;
   top: 0;
+  z-index: 25;
 }
 
 .LEFT {
   left: 0;
   bottom: 0;
+  z-index: 20;
 }
 
 .RIGHT {
   right: 0;
   top: 0;
+  z-index: 20;
 }
 
 .BOTTOM {
   right: 0;
   bottom: 0;
+}
+
+.selectionDropdown {
+  color: green;
+}
+
+.selector__control {
+  width: 100px;
+  z-index: 20;
+}
+
+.selector__menu {
+  background-color: white;
+  z-index: 25;
 }

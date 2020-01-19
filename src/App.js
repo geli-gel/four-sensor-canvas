@@ -60,7 +60,7 @@ class App extends Component {
       readerLabels: {
         "TOP": "Empty",
         "LEFT": "Empty",
-        "RIGHT": "Empty",
+        "RIGHT": "few",
         "BOTTOM": "Empty",  
       }
     }

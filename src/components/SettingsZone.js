@@ -3,6 +3,8 @@ import Reader from './Reader';
 import './SettingsZone.css'
 
 const SettingsZone = ({readerLabels, readerOptions, onSettingChange}) => {
+
+  const controls = ["model","movement","amount","color"]
   
   const readers = Object.keys(readerLabels).map(function(readerPosition, index) {
     return (
@@ -10,6 +12,7 @@ const SettingsZone = ({readerLabels, readerOptions, onSettingChange}) => {
         key={index}
         position={readerPosition}
         label={readerLabels[readerPosition]}
+        controllerOf={controls[index]}
         dropDownOptions={readerOptions[readerPosition]}
         onDropDownSelection={(selection) => onSettingChange(readerPosition, selection)}
       />

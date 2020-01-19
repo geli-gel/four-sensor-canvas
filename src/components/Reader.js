@@ -4,27 +4,29 @@ import Select from 'react-select';
 
 const Reader = (props) => {
 
-  const { position, label, dropDownOptions, onDropDownSelection} = props;
-
-  // const readers = Object.keys(readerLabels).map(function(readerPosition, index) {
+  const { position, label, dropDownOptions, onDropDownSelection, controllerOf} = props;
 
   const valuesLabels = Object.keys(dropDownOptions).map(function(optionNumber, index){
     return {val: String(optionNumber), label: String(dropDownOptions[optionNumber])};
   });
 
-  const selectionDropdown = (position === "RIGHT" || position === "BOTTOM") ? 
+
+  const selectionDropdown = 
     <Select
-      value={label}
+      className="selectionDropdown"
+      classNamePrefix="selector"
+      name={controllerOf}
+      value={{val: label, label: label}}
+      // value={label}
       options={valuesLabels}
       onChange={(value) => onDropDownSelection(String(value.val))} 
+      isSearchable={false}
     /> 
-  : ""
-
 
   return (
     <div className={`reader ${position}`}>
       <span>
-        {position}     {label}
+        {controllerOf}
         {selectionDropdown}
       </span>
     </div>

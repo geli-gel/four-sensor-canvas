@@ -40,7 +40,6 @@ export default function sketch (p) {
   let clearOldDrawingsButton;
   let newDrawingButton;
 
-
   function clearOldDrawings() {
     if (flock.boids.length > 0) {
       flock.boids.length = 0;
@@ -72,6 +71,44 @@ export default function sketch (p) {
       xStart = x;
       yStart = y;
     }
+  }
+
+  function deleteOldestDrawing() {
+    if (flock.boids.length > 0) {
+      flock.boids.splice(0,1);
+    } else if (drawingsArray.length > 0) {
+      drawingsArray.splice(0,1);
+    }
+
+    if (strokePath === null) {
+  
+      // initialize new drawing stuff
+      currentDrawingLineData.length = 0;
+      pen = 'down'
+      // set drawingColor to random if it's currently set to Rainbow
+      if (rainbowOn) {
+        drawingColor = String(rainbowColors[Math.floor(Math.random()*rainbowColors.length)]);
+      } 
+  
+      //to-do: move outside and call 'initializeNewDrawing()'?
+      model.reset();
+      model.generate(gotSketch);
+  
+      if (drawingAnimation === 'flock'){
+        x = 0;
+        y = 0;
+        xStart = x;
+        yStart = y;
+  
+      } else {
+        x = p.random((-canvasWidth / 2) * 0.9, (canvasWidth / 2) * 0.9);
+        y = p.random((-canvasHeight / 2) * 0.9, (canvasHeight / 2) * 0.9);
+        xStart = x;
+        yStart = y;
+      }
+
+    }
+
   }
 
   // p5.serialport variables
@@ -119,7 +156,9 @@ export default function sketch (p) {
 
     // button variables
     clearOldDrawingsButton = p.createButton('clear old drawings')
-    clearOldDrawingsButton.mouseClicked(clearOldDrawings)
+    clearOldDrawingsButton.mouseClicked(clearOldDrawings);
+    newDrawingButton = p.createButton('delete oldest drawing & create new')
+    newDrawingButton.mouseClicked(deleteOldestDrawing);
 
     
     console.log('in sketch setup, modelName: ', modelName)

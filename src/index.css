@@ -25,7 +25,8 @@ code {
 }
 
 .size {
-  margin-right: 35px;
+  margin-right: 70px;
+  float: left;
 }
 
 .red {
@@ -55,4 +56,27 @@ code {
   background: lightgray; /* Green background */
   cursor: pointer; /* Cursor on hover */
   opacity: .5;
+}
+
+
+button {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  height: 38px; /* Specified height */
+  outline: none; /* Remove outline */
+  /* opacity: .6; Set transparency (for mouse-over effects on hover) */
+  font: inherit;
+  border-radius: 4px;
+  float: left;
+  background: none;
+  margin-top: 0.2em;
+}
+
+button:last-of-type {
+  float: right;
+}
+
+button:hover {
+  background: white;
+  color: black;
 }

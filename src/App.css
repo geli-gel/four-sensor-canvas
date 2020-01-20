@@ -69,3 +69,7 @@
   height: 0;
   padding: 5% 0;
 }
+
+.drawing-zone {
+  width: 680px;
+}

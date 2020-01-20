@@ -127,7 +127,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <DrawingZone
+        <DrawingZone className="drawing-zone"
           canvasWidth={600}
           canvasHeight={400}
           sketchDetails={this.state.sketchDetails}

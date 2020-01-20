@@ -36,6 +36,44 @@ export default function sketch (p) {
   let canvasGreen;
   let canvasBlue;
 
+  // button objects & functions
+  let clearOldDrawingsButton;
+  let newDrawingButton;
+
+
+  function clearOldDrawings() {
+    if (flock.boids.length > 0) {
+      flock.boids.length = 0;
+    }
+    if (drawingsArray.length > 0) {
+      drawingsArray.length = 0;
+    }
+    // initialize new drawing stuff
+    currentDrawingLineData.length = 0;
+    pen = 'down'
+    // set drawingColor to random if it's currently set to Rainbow
+    if (rainbowOn) {
+      drawingColor = String(rainbowColors[Math.floor(Math.random()*rainbowColors.length)]);
+    } 
+
+    //to-do: move outside and call 'initializeNewDrawing()'?
+    model.reset();
+    model.generate(gotSketch);
+
+    if (drawingAnimation === 'flock'){
+      x = 0;
+      y = 0;
+      xStart = x;
+      yStart = y;
+
+    } else {
+      x = p.random((-canvasWidth / 2) * 0.9, (canvasWidth / 2) * 0.9);
+      y = p.random((-canvasHeight / 2) * 0.9, (canvasHeight / 2) * 0.9);
+      xStart = x;
+      yStart = y;
+    }
+  }
+
   // p5.serialport variables
   let serial;
   const portName = '/dev/tty.usbmodem14201'; // hard-coded to my computer's port recieving data from Arduino
@@ -78,6 +116,11 @@ export default function sketch (p) {
     canvasBlue.class('slider blue');
     
     p.background(canvasRed.value(), canvasGreen.value(), canvasBlue.value());
+
+    // button variables
+    clearOldDrawingsButton = p.createButton('clear old drawings')
+    clearOldDrawingsButton.mouseClicked(clearOldDrawings)
+
     
     console.log('in sketch setup, modelName: ', modelName)
 

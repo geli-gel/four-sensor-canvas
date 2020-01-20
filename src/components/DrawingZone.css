@@ -6,3 +6,7 @@
   display: block;
   float: left;
 }
+
+.drawing-zone div {
+  width: 600px;
+}

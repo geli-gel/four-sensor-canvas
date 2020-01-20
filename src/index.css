@@ -72,11 +72,15 @@ button {
   margin-top: 0.2em;
 }
 
-button:last-of-type {
+div > button:last-of-type {
   float: right;
 }
 
 button:hover {
   background: white;
   color: black;
+}
+
+canvas {
+  border-radius: 20px;
 }

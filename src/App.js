@@ -9,6 +9,7 @@ class App extends Component {
     super(props)
     this.state = {
       showPopup: false,
+      chosenReader: "",
 
       sketchDetails: {
         // to-do: SET TO ""
@@ -59,6 +60,48 @@ class App extends Component {
           11: "white", 
           12: "aquamarine", // to-do: need to add a 12th option to the arduino code
         },
+      },
+
+      otherOptions: {
+        "TOP": [
+          "alarm_clock",
+          "barn",
+          "bear",
+          "bicycle",
+          "bird",
+          "book",
+          "bus",
+          "butterfly",
+          "cactus",
+          "cat",
+          "dog",
+          "dolphin",
+          "duck",
+          "elephant",
+          "eye",
+          "hand",
+          "key",
+          "map",
+          "octopus",
+          "owl",
+          "palm_tree",
+          "parrot",
+          "penguin",
+          "pig",
+          "radio",
+          "rain",
+          "scorpion",
+          "sheep",
+          "snowflake",
+          "spider",
+          "squirrel",
+          "swan",
+          "tiger",
+          "whale",
+          "windmill",
+          "yoga",
+          "everything",
+        ]
       },
       
       //to-do: this is the same as sketch details except when it's empty so... yeah
@@ -125,14 +168,11 @@ class App extends Component {
     }
   }
 
-  handleSettingsButtonClick = (reader) => {
-    // set settings for popup
 
-  }
-
-  togglePopup = () => {
+  togglePopup = (readerPosition) => {
     this.setState({
-      showPopup: !this.state.showPopup
+      showPopup: !this.state.showPopup,
+      chosenReader: readerPosition,
     });
     console.log('toggled popup')
   }
@@ -165,15 +205,22 @@ class App extends Component {
               readerOptions={this.state.TokenDescriptions}
               onSettingChange={this.updateSketchDetails}
               togglePopup={this.togglePopup}
-              showPopup={this.showPopup}
             />
           </div>
         </div>
 
         {this.state.showPopup ? 
           <Popup
-            text='Close Me'
-            closePopup={this.togglePopup.bind(this)}
+            text={`edit controls for ${this.state.chosenReader.toLowerCase()} polygon`}
+            closePopup={this.togglePopup.bind(this)} // i don't think it needs the bind part
+            // closePopup={this.togglePopup}
+            // display a form with current reader settings
+            chosenReader={this.state.chosenReader}
+            currentSettings={this.state.TokenDescriptions[this.state.chosenReader]}
+            // dropdowns for each one
+            otherOptions={this.state.otherOptions[this.state.chosenReader]}
+            // a button that sets state for the new settings from the form
+            updateTokenDescriptions={(newSettings) => this.updateTokenDescriptions(this.state.chosenReader, newSettings)}
           />
           : null
         }

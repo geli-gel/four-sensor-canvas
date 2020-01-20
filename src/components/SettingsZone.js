@@ -15,7 +15,7 @@ const SettingsZone = ({readerLabels, readerOptions, onSettingChange, togglePopup
         controllerOf={controls[index]}
         dropDownOptions={readerOptions[readerPosition]}
         onDropDownSelection={(selection) => onSettingChange(readerPosition, selection)} // for readers
-        onSettingsButtonClick={togglePopup}
+        onSettingsButtonClick={() => togglePopup(readerPosition)}
       />
     )
   });

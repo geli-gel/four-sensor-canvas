@@ -2,10 +2,10 @@ import React from 'react';
 import Reader from './Reader';
 import './SettingsZone.css'
 
-const SettingsZone = ({readerLabels, readerOptions, onSettingChange}) => {
+const SettingsZone = ({readerLabels, readerOptions, onSettingChange, togglePopup}) => {
 
   const controls = ["model","movement","amount","color"]
-  
+
   const readers = Object.keys(readerLabels).map(function(readerPosition, index) {
     return (
       <Reader
@@ -14,7 +14,8 @@ const SettingsZone = ({readerLabels, readerOptions, onSettingChange}) => {
         label={readerLabels[readerPosition]}
         controllerOf={controls[index]}
         dropDownOptions={readerOptions[readerPosition]}
-        onDropDownSelection={(selection) => onSettingChange(readerPosition, selection)}
+        onDropDownSelection={(selection) => onSettingChange(readerPosition, selection)} // for readers
+        onSettingsButtonClick={togglePopup}
       />
     )
   });

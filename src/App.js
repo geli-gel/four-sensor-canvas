@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import './App.css';
 import DrawingZone from './components/DrawingZone';
 import SettingsZone from './components/SettingsZone';
+import Popup from './components/Popup';
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      showPopup: false,
+
       sketchDetails: {
-        "TOP": "",              // drawingModel (from reader)
-        "LEFT": "",    // drawingAnimation (from reader)
+        // to-do: SET TO ""
+        "TOP": "bee",   
+        // to-do: SET TO ""           // drawingModel (from reader) 
+        "LEFT": "wiggleAround",    // drawingAnimation (from reader)
         "RIGHT": "few",                // drawingAmount (from button) // works better w/ a default :)
         "BOTTOM": "",              // drawingColor (from button)
       },
@@ -120,6 +125,26 @@ class App extends Component {
     }
   }
 
+  handleSettingsButtonClick = (reader) => {
+    // set settings for popup
+
+  }
+
+  togglePopup = () => {
+    this.setState({
+      showPopup: !this.state.showPopup
+    });
+    console.log('toggled popup')
+  }
+
+  updateTokenDescriptions = (reader, newSettings) => {
+    let updatedTokenDescriptions = this.state.TokenDescriptions;
+    updatedTokenDescriptions[reader] = newSettings
+    this.setState({
+      TokenDescriptions: updatedTokenDescriptions,
+    })
+  }
+
 
   render() {
 
@@ -139,9 +164,20 @@ class App extends Component {
               readerLabels={this.state.readerLabels}
               readerOptions={this.state.TokenDescriptions}
               onSettingChange={this.updateSketchDetails}
+              togglePopup={this.togglePopup}
+              showPopup={this.showPopup}
             />
           </div>
         </div>
+
+        {this.state.showPopup ? 
+          <Popup
+            text='Close Me'
+            closePopup={this.togglePopup.bind(this)}
+          />
+          : null
+        }
+
       </div>
     );
   }

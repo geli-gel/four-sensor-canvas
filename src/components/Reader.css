@@ -32,6 +32,16 @@
   z-index: 25;
 }
 
+.TOP button {
+  display: none;
+}
+
+.TOP:hover, .TOP:hover button{
+  display: inline;
+  /* warning below is not true! */
+  float: inherit; 
+}
+
 .LEFT {
   left: 0;
   bottom: 0;

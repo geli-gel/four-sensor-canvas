@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 const Reader = (props) => {
 
-  const { position, label, dropDownOptions, onDropDownSelection, controllerOf} = props;
+  const { position, label, dropDownOptions, onDropDownSelection, controllerOf, onSettingsButtonClick} = props;
 
   const valuesLabels = Object.keys(dropDownOptions).map(function(optionNumber, index){
     return {val: String(optionNumber), label: String(dropDownOptions[optionNumber])};
@@ -27,6 +27,7 @@ const Reader = (props) => {
     <div className={`reader ${position}`}>
       <span>
         {controllerOf}
+        {String(position) === "TOP" ? <button onClick={onSettingsButtonClick}>settings</button> : ""}
         {/* uncomment selection Dropdown to display dropdowns instead of using readers */}
         {/* {selectionDropdown} */}
       </span>

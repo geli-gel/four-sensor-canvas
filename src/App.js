@@ -58,10 +58,10 @@ class App extends Component {
       
       //to-do: this is the same as sketch details except when it's empty so... yeah
       readerLabels: {
-        "TOP": "Empty",
-        "LEFT": "Empty",
+        "TOP": "empty",
+        "LEFT": "empty",
         "RIGHT": "few",
-        "BOTTOM": "Empty",  
+        "BOTTOM": "empty",  
       }
     }
   }

@@ -12,17 +12,15 @@ class App extends Component {
       chosenReader: "",
 
       sketchDetails: {
-        // to-do: SET TO ""
-        "TOP": "bee",   
-        // to-do: SET TO ""           // drawingModel (from reader) 
-        "LEFT": "wiggleAround",    // drawingAnimation (from reader)
-        "RIGHT": "few",                // drawingAmount (from button) // works better w/ a default :)
-        "BOTTOM": "",              // drawingColor (from button)
+        "TOP": "",       // drawingModel (from reader) 
+        "LEFT": "",      // drawingAnimation (from reader)
+        "RIGHT": "",     // drawingAmount (from button)
+        "BOTTOM": "",    // drawingColor (from button)
       },
 
       TokenDescriptions: {
         "TOP": {
-          1: "bee", // in the future these will be able to be set to whatever via dropdown in reader settings
+          1: "bee", 
           2: "flower",
           3: "strawberry",
           4: "snail",
@@ -114,7 +112,7 @@ class App extends Component {
       readerLabels: {
         "TOP": "empty",
         "LEFT": "empty",
-        "RIGHT": "few",
+        "RIGHT": "empty",
         "BOTTOM": "empty",  
       }
     }

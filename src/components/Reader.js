@@ -29,7 +29,7 @@ const Reader = (props) => {
         {controllerOf}    {label}
         {String(position) === "TOP" ? <button onClick={onSettingsButtonClick}>settings</button> : ""}
         {/* uncomment selection Dropdown to display dropdowns instead of using readers */}
-        {selectionDropdown}
+        {/* {selectionDropdown} */}
       </span>
     </div>
   )

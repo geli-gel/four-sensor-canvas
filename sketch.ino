@@ -48,8 +48,8 @@ String tagarray[][12] = {
   {"CC426D31", "4CF96C31", "AC966D31", "3C646D31", "7C146D31", "1CA86D31"}, // "TOP"
   {"FCAB6D31", "4CD16D31", "3CCF6D31", "5CDC6D31"},                        // "LEFT"
   {"CC546C31", "C996C31", "3C1D6C31", "DC4E6C31"},                        // "RIGHT"
-  // to-do: find out why leading 0 not going into uidString (for *0*CA66B31 below)
-  {"DCC96431", "2C0D6531", "CCA16631", "BCB56531", "AC6E6531", "FC616431", "CA66B31", "5C426631", "BCAF6531", "7C0A6631", "EC676431", "7CDB6B31" }, // "BOTTOM"  
+  // to-do: find out why leading 0 not going into uidString (for *0*C A6 6B 31, 2C *0*D 65 31, and 7C *0*A 66 31 below)
+  {"DCC96431", "2CD6531", "CCA16631", "BCB56531", "AC6E6531", "FC616431", "CA66B31", "5C426631", "BCAF6531", "7CA6631", "EC676431", "7CDB6B31" }, // "BOTTOM"  
 };
 
 // AZ: Serial Message Parts : 
@@ -92,7 +92,7 @@ void setup() {
 //    Serial.print(F("Checking Reader "));
 //    Serial.print(reader + 1);
 //    Serial.print(F(": "));
-    mfrc522[reader].PCD_DumpVersionToSerial();
+//    mfrc522[reader].PCD_DumpVersionToSerial();
     mfrc522[reader].PCD_SetAntennaGain(mfrc522[reader].RxGain_max);
   }
 
@@ -190,8 +190,8 @@ void loop() {
 */
 void dump_byte_array(byte * buffer, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
-    Serial.print(buffer[i] < 0x10 ? " 0" : " ");
-    Serial.print(buffer[i], HEX);
+    // Serial.print(buffer[i] < 0x10 ? " 0" : " ");
+    // Serial.print(buffer[i], HEX);
 //    https://arduino.stackexchange.com/questions/53258/how-to-store-an-rfid-tag-number-in-a-string
     String uid_part = String(buffer[i], HEX);
     uid_part.toUpperCase();

@@ -39,6 +39,40 @@ export default function sketch (p) {
   // button objects & functions
   let clearOldDrawingsButton;
   let newDrawingButton;
+  let nonstopButton;
+
+  let nonstop = false;
+
+  function toggleNonstop() {
+    nonstop = !nonstop;
+    if (nonstop) {
+
+    // initialize new drawing stuff
+    currentDrawingLineData.length = 0;
+    pen = 'down'
+    // set drawingColor to random if it's currently set to Rainbow
+    if (rainbowOn) {
+      drawingColor = String(rainbowColors[Math.floor(Math.random()*rainbowColors.length)]);
+    } 
+
+    //to-do: move outside and call 'initializeNewDrawing()'?
+    model.reset();
+    model.generate(gotSketch);
+
+    if (drawingAnimation === 'flock'){
+      x = 0;
+      y = 0;
+      xStart = x;
+      yStart = y;
+
+    } else {
+      x = p.random((-canvasWidth / 2) * 0.9, (canvasWidth / 2) * 0.9);
+      y = p.random((-canvasHeight / 2) * 0.9, (canvasHeight / 2) * 0.9);
+      xStart = x;
+      yStart = y;
+    }
+    }
+  }
 
   function clearOldDrawings() {
     if (flock.boids.length > 0) {
@@ -159,7 +193,8 @@ export default function sketch (p) {
     clearOldDrawingsButton.mouseClicked(clearOldDrawings);
     newDrawingButton = p.createButton('delete oldest drawing & create new')
     newDrawingButton.mouseClicked(deleteOldestDrawing);
-
+    nonstopButton = p.createButton('nonstop');
+    nonstopButton.mouseClicked(toggleNonstop);
     
     console.log('in sketch setup, modelName: ', modelName)
 
@@ -267,6 +302,13 @@ export default function sketch (p) {
     p.background(canvasRed.value(), canvasGreen.value(), canvasBlue.value());
     p.noFill();
     p.stroke(drawingColor);
+
+    // button class stuff
+    if (nonstop) {
+      nonstopButton.class('nonstop-on');
+    } else {
+      nonstopButton.removeClass('nonstop-on')
+    }
     
     // to-do: figure out how to incorporate time for an animation
     // let t = p.frameCount / 60; // update time (from https://p5js.org/examples/simulate-snowflakes.html)
@@ -274,11 +316,20 @@ export default function sketch (p) {
 
     // FIRST FIRST remove a things if the flock or drawings list is too big
     let numberOfAllowedDrawings = Number(drawingAmount);
-    if (drawingsArray.length > numberOfAllowedDrawings) {
-      drawingsArray.splice(0,1);
-    }
-    else if (flock.boids.length > numberOfAllowedDrawings) {
-      flock.boids.splice(0,1);
+    if (drawingsArray.length + flock.boids.length > numberOfAllowedDrawings) {
+      if (drawingsArray.length >= flock.boids.length) {
+        drawingsArray.splice(0,1);
+      }
+      else {
+        flock.boids.splice(0,1);
+      }
+    } else if ((flock.boids.length + drawingsArray.length === numberOfAllowedDrawings) && nonstop) {
+      if (drawingsArray.length >= flock.boids.length) {
+        drawingsArray.splice(0,1);
+      }
+      else {
+        flock.boids.splice(0,1);
+      }
     }
 
     // FIRST update the flock
@@ -352,7 +403,7 @@ export default function sketch (p) {
         }
 
         // reset the model and generate sketch line if there is room for another drawing
-        if (!((flock.boids.length + drawingsArray.length) >= numberOfAllowedDrawings)) {
+        if (!((flock.boids.length + drawingsArray.length) >= numberOfAllowedDrawings) || nonstop ) {
 
           // set drawingColor to random if it's currently set to Rainbow
           if (rainbowOn) {

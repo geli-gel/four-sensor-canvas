@@ -84,3 +84,12 @@ button:hover {
 canvas {
   border-radius: 20px;
 }
+
+.nonstop-on {
+  background-color: lightgray;
+  opacity: .5
+}
+.nonstop-on:hover {
+  background-color: lightgray;
+  opacity: .8
+}

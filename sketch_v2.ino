@@ -41,18 +41,14 @@
 
 // List of Tags UIDs // AZ: that are allowed for each reader
 // TO-DO: ? change these into byte sized hex versions? possible? would have to rewrite cards??? idk!
-String tagarray[][11] = {
-  // TO-DO: make the uidString variable have spaces in it, ie: read it in the same way dumpinfo works
-//  {"05 90 DB 22", "15 4A 4A 22", "15 B9 D2 22", "15 C3 FF 22", "15 C9 46 22", "44 2B 9D 23"},
-//  {"44 49 87 23", "44 72 18 23", "44 7C 7E 23"}, 
-//  {"44 83 4F 23", "44 9A B6 23", "44 B0 0B 23", "44 B9 66 23"},
-//  {"44 CF A9 23", "44 D5 DD 23", "54 04 DD 23", "54 1D B4 23", "54 26 D9 23", "76 EB 41 23", "86 88 A5 23", "B2 12 F1 2D", "B2 D6 76 2D", "F5 D1 07 21" },
-
+String tagarray[][12] = {
+// TO-DO: make the uidString variable have spaces in it, ie: read it in the same way dumpinfo works
 // no spaces in between to match uidString
-  {"590DB22", "154A4A22", "15B9D222", "15C3FF22", "15C94622", "442B9D23"}, // "TOP"// to-do: find out why leading 0 not going into uidString (for *0*590DB22)
-  {"44498723", "44721823", "447C7E23", "F7839D5F"},                        // "LEFT"
-  {"44834F23", "449AB623", "44B00B23", "44B96623"},                        // "RIGHT"
-  {"44CFA923", "44D5DD23", "5404DD23", "541DB423", "5426D923", "76EB4123", "8688A523", "B212F12D", "B2D6762D", "F5D10721", "F5EB9421" }, // "BOTTOM"
+  {"CC426D31", "4CF96C31", "AC966D31", "3C646D31", "7C146D31", "1CA86D31"}, // "TOP"
+  {"FCAB6D31", "4CD16D31", "3CCF6D31", "5CDC6D31"},                        // "LEFT"
+  {"CC546C31", "C996C31", "3C1D6C31", "DC4E6C31"},                        // "RIGHT"
+  // to-do: find out why leading 0 not going into uidString (for *0*CA66B31 below)
+  {"DCC96431", "2C0D6531", "CCA16631", "BCB56531", "AC6E6531", "FC616431", "CA66B31", "5C426631", "BCAF6531", "7C0A6631", "EC676431", "7CDB6B31" }, // "BOTTOM"  
 };
 
 // AZ: Serial Message Parts : 
@@ -66,7 +62,7 @@ bool validCard = false;
 
 #define NR_OF_READERS   4
 
-byte ssPins[] = {SS_1_PIN, SS_2_PIN, SS_3_PIN, SS_4_PIN};
+byte ssPins[] = {SS_1_PIN, SS_2_PIN, SS_3_PIN, SS_4_PIN}; 
 
 // Create an MFRC522 instance :
 MFRC522 mfrc522[NR_OF_READERS];
@@ -87,13 +83,12 @@ void setup() {
   SPI.begin();                  // Init SPI bus
   delay(4);
 
-
   /* looking for MFRC522 readers */
   for (uint8_t reader = 0; reader < NR_OF_READERS; reader++) {
     mfrc522[reader].PCD_Init(ssPins[reader], RST_PIN);
 
 // TO-DO: make the app read a message sent from here saying the readers are all connected
-//    Serial.print(F("Reader "));
+//    Serial.print(F("Checking Reader "));
 //    Serial.print(reader + 1);
 //    Serial.print(F(": "));
     mfrc522[reader].PCD_DumpVersionToSerial();
@@ -111,8 +106,11 @@ void loop() {
 //  for (uint8_t reader = 0; reader < NR_OF_READERS; reader++) {
   for (uint8_t reader = 0; reader < NR_OF_READERS; reader++) {  // AZ: changed to int from uint8_t
     // Looking for new cards
+//      Serial.print(F("Checking Reader "));
+//      Serial.print(reader + 1);
+//      Serial.println();
     if (mfrc522[reader].PICC_IsNewCardPresent() && mfrc522[reader].PICC_ReadCardSerial()) {
-//      Serial.print(F("Reader "));
+//      Serial.print(F("Checking Reader "));
 //      Serial.print(reader + 1);
 //      Serial.println();
 
@@ -191,8 +189,8 @@ void loop() {
 */
 void dump_byte_array(byte * buffer, byte bufferSize) {
   for (byte i = 0; i < bufferSize; i++) {
-//    Serial.print(buffer[i] < 0x10 ? " 0" : " ");
-//    Serial.print(buffer[i], HEX);
+    Serial.print(buffer[i] < 0x10 ? " 0" : " ");
+    Serial.print(buffer[i], HEX);
 //    https://arduino.stackexchange.com/questions/53258/how-to-store-an-rfid-tag-number-in-a-string
     String uid_part = String(buffer[i], HEX);
     uid_part.toUpperCase();

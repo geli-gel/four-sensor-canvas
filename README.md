@@ -60,6 +60,7 @@ upload the sketch and wire up the electronics
 
 - [trello](https://trello.com/b/NLbrXQg4) with what's next
 
+- Sometimes I call it four sensor canvas, sometimes I call it four sensor palette 🤷🏽
 
 
 

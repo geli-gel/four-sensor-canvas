@@ -5,6 +5,10 @@ react app and arduino sketch for controlling a p5 canvas with RFID tokens on a 2
 
 [deployed version with dropdowns instead of arduino input](https://four-sensor-palette.herokuapp.com/)
 
+Inline-style: 
+![four sensor canvas diagram - arduino and peripherials connected to laptop, serial output connected to react app via websocket](https://github.com/geli-gel/four-sensor-canvas/blob/master/high_level_diagram.png?raw=true "four sensor canvas diagram")
+
+
 ## how to start
 
 ### gather parts & tools

@@ -1,4 +1,4 @@
-# four sensor palette
+# four sensor canvas
 ##### my Ada Developers Academy capstone project
 
 react app and arduino sketch for controlling a p5 canvas with RFID tokens on a 2x2 diamond shaped grid of RFID readers to activate the visuals on the computer screen with the base of each drawing being made by a machine learning model

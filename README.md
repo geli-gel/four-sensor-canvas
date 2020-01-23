@@ -50,9 +50,9 @@ upload the sketch and wire up the electronics
 ### run it
 1. run `npm install` then `npm start` from root, open developer tools to see console output that should confirm that the arduino is connected and sketch-rnn models are loading from ml5.
 
-[demo video with arduino input](https://drive.google.com/open?id=1UDAp7LoeMxUOecAEYqrvK5QRWSDaE6jL)   
+📺 [demo video with arduino input](https://drive.google.com/open?id=1UDAp7LoeMxUOecAEYqrvK5QRWSDaE6jL)   
 
-[deployed version with dropdowns instead of arduino input](https://four-sensor-palette.herokuapp.com/)
+💻 [deployed version with dropdowns instead of arduino input](https://four-sensor-palette.herokuapp.com/)
 
 
 

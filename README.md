@@ -26,7 +26,7 @@ upload the sketch and wire up the electronics
 1. Wire arduino to RFID readers according to [this diagram](https://raw.githubusercontent.com/Annaane/MultiRfid/master/Wiring.jpg "Annaane's Wiring Image") but with a 4th reader's SPI SS pin plugged into the Arduino's '6' pin as noted below the comment on line 35 in `sketch.ino`
 1. solder headers onto the RFID readers *well*.
 
-![arduino wired to rfid readers](https://i.imgur.com/mkg3WZs.jpg?1 "arduino wired to rfid readers")
+![arduino wired to rfid readers](https://i.imgur.com/mkg3WZsl.jpg?1 "arduino wired to rfid readers")
 
 ### prepare RFID readers and tokens/tags
 1. label / arrange the readers in a diamond shape and prepare their polygon controllers by putting RFID sticker tags onto each side of the polygons:
@@ -42,7 +42,7 @@ upload the sketch and wire up the electronics
     - recomment those lines
 1. upload the sketch with the new UIDs onto the Arduino. The serial output from the Arduino IDE should now be a string message containing the reader position label and token number as tags are read.
 
-![arduino and readers in housing with cardboard polygons on top of readers](https://i.imgur.com/4xjaxyWm.jpg "shoddy housing and cardboard polygons")
+![arduino and readers in housing with cardboard polygons on top of readers](https://i.imgur.com/4xjaxyWl.jpg?1 "shoddy housing and cardboard polygons")
 
 ### connect arduino serial output to app 
 1. the arduino's serial output cannot be directly accessed by an app so it needs to be served, this can be easily done by installing the [p5.serialcontrol gui app](https://github.com/p5-serial/p5.serialcontrol/releases/tag/0.1.2).

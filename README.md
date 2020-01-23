@@ -42,7 +42,7 @@ upload the sketch and wire up the electronics
     - recomment those lines
 1. upload the sketch with the new UIDs onto the Arduino. The serial output from the Arduino IDE should now be a string message containing the reader position label and token number as tags are read.
 
-![arduino and readers in housing with cardboard polygons on top of readers](https://i.imgur.com/4xjaxyW.jpg "shoddy housing and cardboard polygons")
+![arduino and readers in housing with cardboard polygons on top of readers](https://i.imgur.com/4xjaxyWm.jpg "shoddy housing and cardboard polygons")
 
 ### connect arduino serial output to app 
 1. the arduino's serial output cannot be directly accessed by an app so it needs to be served, this can be easily done by installing the [p5.serialcontrol gui app](https://github.com/p5-serial/p5.serialcontrol/releases/tag/0.1.2).

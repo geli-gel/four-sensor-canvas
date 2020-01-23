@@ -3,9 +3,6 @@
 
 react app and arduino sketch for controlling a p5 canvas with RFID tokens on a 2x2 diamond shaped grid of RFID readers to activate the visuals on the computer screen with the base of each drawing being made by a machine learning model
 
-[deployed version with dropdowns instead of arduino input](https://four-sensor-palette.herokuapp.com/)
-[demo video with arduino input](https://drive.google.com/open?id=1UDAp7LoeMxUOecAEYqrvK5QRWSDaE6jL)
-
 ![four sensor canvas diagram - arduino and peripherials connected to laptop, serial output connected to react app via websocket](https://github.com/geli-gel/four-sensor-canvas/blob/master/high_level_diagram.png?raw=true "four sensor canvas diagram")
 
 
@@ -52,6 +49,10 @@ upload the sketch and wire up the electronics
 
 ### run it
 1. run `npm install` then `npm start` from root, open developer tools to see console output that should confirm that the arduino is connected and sketch-rnn models are loading from ml5.
+
+[demo video with arduino input](https://drive.google.com/open?id=1UDAp7LoeMxUOecAEYqrvK5QRWSDaE6jL) 
+[deployed version with dropdowns instead of arduino input](https://four-sensor-palette.herokuapp.com/)
+
 
 
 # Notes
